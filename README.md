@@ -39,8 +39,16 @@ But everything is configurable (optional avatar icon, optional full detailed vie
 ### Basic Usage
 
 #### XML
-Use the ChipsInput view in your layout and customize it ([see](#chipsinput-attributes) all attributes) :
+Use the ChipsInput view in your layout with default options  :
 
+```xml
+<com.pchmn.materialchips.ChipsInput
+        android:id="@+id/chips_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:hint="Enter a name" />
+```
+You can also customize it ([see](#chipsinput-attributes) all attributes) :
 ```xml
 <com.pchmn.materialchips.ChipsInput
         android:id="@+id/chips_input"
@@ -55,7 +63,6 @@ Use the ChipsInput view in your layout and customize it ([see](#chipsinput-attri
         app:chip_backgroundColor="@color/customColor"
         app:chip_deletable="false"
         app:chip_deleteIconColor="@color/customColor"
-        app:showChipDetailed="true"
         app:chip_detailed_textColor="@color/customColor"
         app:chip_detailed_backgroundColor="@color/customColor"
         app:chip_detailed_deleteIconColor="@color/customColor"
