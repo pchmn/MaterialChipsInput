@@ -6,8 +6,10 @@ Implementation of Material Design [Chips](https://material.io/guidelines/compone
 
 <img src="https://github.com/pchmn/MaterialChipsInput/blob/master/docs/demo2.gif" alt="Demo" height="600px"/>
 
-## Sample APK
-[sample-v1.0.0.apk](https://github.com/pchmn/MaterialChipsInput/raw/master/docs/material-chips-input-sample-v1.0.0.apk)
+## Demo
+[Download sample-v1.0.0.apk](https://github.com/pchmn/MaterialChipsInput/raw/master/docs/material-chips-input-sample-v1.0.0.apk)
+
+[Live demo on appetize.io](https://appetize.io/app/dmhu0jfyuypde3bw8wrjr7zn94?device=nexus5&scale=75&orientation=portrait&osVersion=7.0)
 
 ## Setup
 
