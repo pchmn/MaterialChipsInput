@@ -17,6 +17,7 @@ import com.beloo.widget.chipslayoutmanager.ChipsLayoutManager;
 import com.pchmn.materialchips.adapter.ChipsAdapter;
 import com.pchmn.materialchips.model.Chip;
 import com.pchmn.materialchips.model.ChipInterface;
+import com.pchmn.materialchips.util.ActivityUtil;
 import com.pchmn.materialchips.util.MyWindowCallback;
 import com.pchmn.materialchips.util.ViewUtil;
 import com.pchmn.materialchips.views.ChipsInputEditText;
@@ -141,8 +142,12 @@ public class ChipsInput extends ScrollViewMaxHeight {
 
         // set window callback
         // will hide DetailedOpenView and hide keyboard on touch outside
-        android.view.Window.Callback mCallBack = ((Activity) mContext).getWindow().getCallback();
-        ((Activity) mContext).getWindow().setCallback(new MyWindowCallback(mCallBack, ((Activity) mContext)));
+        Activity activity = ActivityUtil.scanForActivity(mContext);
+        if(activity == null)
+            throw new ClassCastException("android.view.Context cannot be cast to android.app.Activity");
+
+        android.view.Window.Callback mCallBack = (activity).getWindow().getCallback();
+        activity.getWindow().setCallback(new MyWindowCallback(mCallBack, activity));
     }
 
     public void addChip(ChipInterface chip) {

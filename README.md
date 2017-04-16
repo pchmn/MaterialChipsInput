@@ -7,7 +7,7 @@ Implementation of Material Design [Chips](https://material.io/guidelines/compone
 <img src="https://github.com/pchmn/MaterialChipsInput/blob/master/docs/demo2.gif" alt="Demo" height="600px"/>
 
 ## Demo
-[Download sample-v1.0.0.apk](https://github.com/pchmn/MaterialChipsInput/raw/master/docs/material-chips-input-sample-v1.0.0.apk)
+[Download sample-v1.0.1.apk](https://github.com/pchmn/MaterialChipsInput/raw/master/docs/material-chips-input-sample-v1.0.1.apk)
 
 [Live demo on appetize.io](https://appetize.io/app/dmhu0jfyuypde3bw8wrjr7zn94?device=nexus5&scale=75&orientation=portrait&osVersion=7.0)
 
@@ -28,7 +28,7 @@ allprojects {
 In your app level build.gradle :
 ```java
 dependencies {
-    compile 'com.github.pchmn:MaterialChipsInput:1.0.0'
+    compile 'com.github.pchmn:MaterialChipsInput:1.0.1'
 }      
 ```
 <br><br>
