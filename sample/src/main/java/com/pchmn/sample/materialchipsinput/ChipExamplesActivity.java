@@ -1,8 +1,11 @@
 package com.pchmn.sample.materialchipsinput;
 
+import android.net.Uri;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.pchmn.materialchips.ChipView;
@@ -13,6 +16,7 @@ import butterknife.ButterKnife;
 public class ChipExamplesActivity extends AppCompatActivity {
 
     private static final String TAG = ChipExamplesActivity.class.toString();
+    @BindView(R.id.layout) LinearLayout mLayout;
     @BindView(R.id.chip1) ChipView mChip1;
     @BindView(R.id.chip2) ChipView mChip2;
     @BindView(R.id.chip3) ChipView mChip3;
@@ -77,5 +81,24 @@ public class ChipExamplesActivity extends AppCompatActivity {
         mChip7.setOnDeleteClicked(view -> {
             Toast.makeText(ChipExamplesActivity.this, mChip7.getLabel() + ": delete clicked", Toast.LENGTH_SHORT).show();
         });
+
+
+        // programmatically
+        Uri uri = null;
+        ChipView chipView1 = new ChipView(this);
+        chipView1.setLabel("Test 1");
+        chipView1.setLabelColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        chipView1.setAvatarIcon(uri);
+        chipView1.setHasAvatarIcon(true);
+
+        ChipView chipView2 = new ChipView(this);
+        chipView2.setLabel("Test 1");
+        chipView2.setChipBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
+        chipView2.setLabelColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        chipView2.setAvatarIcon(uri);
+        chipView2.setDeleteIconColor(ContextCompat.getColor(this, R.color.colorPrimary));
+
+        //mLayout.addView(chipView1);
+        //mLayout.addView(chipView2);
     }
 }
