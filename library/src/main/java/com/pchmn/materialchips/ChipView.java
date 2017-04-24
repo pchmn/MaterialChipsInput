@@ -92,6 +92,7 @@ public class ChipView extends RelativeLayout {
                 mHasAvatarIcon = a.getBoolean(R.styleable.ChipView_hasAvatarIcon, false);
                 int avatarIconId = a.getResourceId(R.styleable.ChipView_avatarIcon, NONE);
                 if(avatarIconId != NONE) mAvatarIconDrawable = ContextCompat.getDrawable(mContext, avatarIconId);
+                if(mAvatarIconDrawable != null) mHasAvatarIcon = true;
                 // delete icon
                 mDeletable = a.getBoolean(R.styleable.ChipView_deletable, false);
                 mDeleteIconColor = a.getColorStateList(R.styleable.ChipView_deleteIconColor);
@@ -131,17 +132,14 @@ public class ChipView extends RelativeLayout {
 
     public void inflate(ChipInterface chip) {
         mChip = chip;
-
-        // icon
-        if(mHasAvatarIcon && mChip.getAvatarUri() != null)
-            setAvatarIcon(mChip.getAvatarUri());
-        else if(mHasAvatarIcon && mChip.getAvatarDrawable() != null)
-            setAvatarIcon(mChip.getAvatarDrawable());
-        else if(mHasAvatarIcon)
-            mAvatarIconImageView.setImageBitmap(mLetterTileProvider.getLetterTile(chip.getLabel()));
-
         // label
-        mLabelTextView.setText(mChip.getLabel());
+        mLabel = mChip.getLabel();
+        // icon
+        mAvatarIconUri = mChip.getAvatarUri();
+        mAvatarIconDrawable = mChip.getAvatarDrawable();
+
+        // inflate
+        inflateWithAttributes();
     }
 
     /**

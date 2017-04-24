@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 1.0.4
+
+Fixed bug with `ChipView` label in v1.0.3
+
 # 1.0.3
 
 Fixed bug with  `NullPointerException` ([see](https://github.com/pchmn/MaterialChipsInput/issues/3) issue)

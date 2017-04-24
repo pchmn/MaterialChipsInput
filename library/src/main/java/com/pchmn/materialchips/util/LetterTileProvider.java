@@ -80,6 +80,7 @@ public class LetterTileProvider {
      *         default image is shown instead
      */
     public Bitmap getLetterTile(String displayName) {
+        // workaround
         if(displayName == null || displayName.length() == 0)
             return null;
 
@@ -112,8 +113,9 @@ public class LetterTileProvider {
      *         default image is shown instead
      */
     public Bitmap getCircularLetterTile(String displayName) {
+        // workaround
         if(displayName == null || displayName.length() == 0)
-            return null;
+            displayName = ".";
 
         final Bitmap bitmap = Bitmap.createBitmap(mWidth, mHeight, Bitmap.Config.ARGB_8888);
         final char firstChar = displayName.charAt(0);

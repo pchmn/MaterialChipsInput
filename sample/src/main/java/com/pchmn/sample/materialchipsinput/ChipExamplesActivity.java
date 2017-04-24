@@ -86,9 +86,8 @@ public class ChipExamplesActivity extends AppCompatActivity {
         // programmatically
         Uri uri = null;
         ChipView chipView1 = new ChipView(this);
-        chipView1.setLabel("Test 1");
-        chipView1.setLabelColor(ContextCompat.getColor(this, R.color.colorPrimary));
-        chipView1.setAvatarIcon(uri);
+        chipView1.setLabel("Pritesh");
+        chipView1.setPadding(2,2,2,2);
         chipView1.setHasAvatarIcon(true);
 
         ChipView chipView2 = new ChipView(this);
@@ -98,7 +97,7 @@ public class ChipExamplesActivity extends AppCompatActivity {
         chipView2.setAvatarIcon(uri);
         chipView2.setDeleteIconColor(ContextCompat.getColor(this, R.color.colorPrimary));
 
-        //mLayout.addView(chipView1);
-        //mLayout.addView(chipView2);
+        mLayout.addView(chipView1);
+        mLayout.addView(chipView2);
     }
 }

@@ -370,7 +370,6 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     private boolean listContains(List<ChipInterface> contactList, ChipInterface chip) {
-        Log.e(TAG, mChipsInput.getChipValidator() == null ? "null": "not null");
 
         if(mChipsInput.getChipValidator() != null) {
             for(ChipInterface item: contactList) {
