@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pchmn.materialchips.ChipView;
 import com.pchmn.materialchips.ChipsInput;
@@ -45,6 +46,10 @@ public class ContactListActivity extends AppCompatActivity {
                 .subscribe(granted -> {
                     if(granted && mContactList.size() == 0)
                         getContactList();
+
+                }, err -> {
+                    Log.e(TAG, err.getMessage());
+                    Toast.makeText(ContactListActivity.this, "Error get contacts, see logs", Toast.LENGTH_LONG).show();
                 });
 
         // chips listener
