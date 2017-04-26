@@ -31,7 +31,7 @@ public class ContactListActivity extends AppCompatActivity {
     @BindView(R.id.chips_input) ChipsInput mChipsInput;
     @BindView(R.id.validate) Button mValidateButton;
     @BindView(R.id.chip_list) TextView mChipListText;
-    private List<ContactChip> mContactList = new ArrayList<>();
+    private List<ContactChip> mContactList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +39,7 @@ public class ContactListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_contact_list);
         // butter knife
         ButterKnife.bind(this);
+        mContactList = new ArrayList<>();
 
         // get contact list
         new RxPermissions(this)

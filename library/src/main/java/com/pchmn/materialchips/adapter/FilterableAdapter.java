@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pchmn.materialchips.ChipsInput;
 import com.pchmn.materialchips.R;
@@ -58,17 +59,23 @@ public class FilterableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                              ColorStateList textColor) {
         mContext = context;
         mRecyclerView = recyclerView;
-        Collections.sort(chipList, new Comparator<ChipInterface>() {
-            @Override
-            public int compare(ChipInterface o1, ChipInterface o2) {
-                Collator collator = Collator.getInstance(Locale.getDefault());
-                collator.setStrength(Collator.PRIMARY);
-                return collator.compare(o1.getLabel(), o2.getLabel());
-            }
-        });
-        mOriginalList.addAll(chipList);
-        mChipList.addAll(chipList);
-        mFilteredList.addAll(chipList);
+        if(chipList == null) {
+            Log.e(TAG, "The filterable list is null");
+            Toast.makeText(context, "The filterable list is null", Toast.LENGTH_LONG).show();
+        }
+        else {
+            Collections.sort(chipList, new Comparator<ChipInterface>() {
+                @Override
+                public int compare(ChipInterface o1, ChipInterface o2) {
+                    Collator collator = Collator.getInstance(Locale.getDefault());
+                    collator.setStrength(Collator.PRIMARY);
+                    return collator.compare(o1.getLabel(), o2.getLabel());
+                }
+            });
+            mOriginalList.addAll(chipList);
+            mChipList.addAll(chipList);
+            mFilteredList.addAll(chipList);
+        }
         mLetterTileProvider = new LetterTileProvider(mContext);
         mBackgroundColor = backgroundColor;
         mTextColor = textColor;
