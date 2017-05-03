@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ContactListActivity" />
-        <activity android:name=".ChipExamplesActivity"></activity>
+        <activity android:name=".ChipExamplesActivity" />
     </application>
 
 </manifest>

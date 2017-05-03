@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -14,7 +15,8 @@
         android:layout_height="40dp"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="16dp"
-        android:src="@drawable/avatar" />
+        android:src="@drawable/avatar"
+        tools:ignore="RtlHardcoded" />
 
     <!-- info -->
     <LinearLayout
@@ -26,7 +28,8 @@
         android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"
         android:layout_marginLeft="18dp"
-        android:layout_marginRight="16dp">
+        android:layout_marginRight="16dp"
+        tools:ignore="RtlHardcoded">
 
         <!-- name -->
         <TextView
@@ -35,7 +38,7 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:textColor="@android:color/black"
-            android:text="Two line item"/>
+            tools:text="Two line item"/>
 
         <TextView
             android:id="@+id/info"
@@ -43,7 +46,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="2dp"
             android:textSize="13sp"
-            android:text="secondary text"/>
+            tools:text="secondary text"/>
 
 
     </LinearLayout>

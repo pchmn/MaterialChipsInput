@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.AlphaAnimation;
-import android.widget.Filter;
 import android.widget.RelativeLayout;
 
 import com.pchmn.materialchips.ChipsInput;
@@ -30,12 +29,10 @@ import butterknife.ButterKnife;
 
 public class FilterableListView extends RelativeLayout {
 
-    private static final String TAG = FilterableListView.class.toString();
-    private Context mContext;
+    private final Context mContext;
     // list
     @BindView(R2.id.recycler_view) RecyclerView mRecyclerView;
     private FilterableAdapter mAdapter;
-    private List<? extends ChipInterface> mFilterableList;
     // others
     private ChipsInput mChipsInput;
 
@@ -59,7 +56,6 @@ public class FilterableListView extends RelativeLayout {
     }
 
     public void build(List<? extends ChipInterface> filterableList, ChipsInput chipsInput, ColorStateList backgroundColor, ColorStateList textColor) {
-        mFilterableList = filterableList;
         mChipsInput = chipsInput;
 
         // adapter
@@ -105,15 +101,12 @@ public class FilterableListView extends RelativeLayout {
     }
 
     public void filterList(CharSequence text) {
-        mAdapter.getFilter().filter(text, new Filter.FilterListener() {
-            @Override
-            public void onFilterComplete(int count) {
-                // show if there are results
-                if(mAdapter.getItemCount() > 0)
-                    fadeIn();
-                else
-                    fadeOut();
-            }
+        mAdapter.getFilter().filter(text, count -> {
+            // show if there are results
+            if(mAdapter.getItemCount() > 0)
+                fadeIn();
+            else
+                fadeOut();
         });
     }
 

@@ -11,8 +11,8 @@ public class Chip implements ChipInterface {
     private Object id;
     private Uri avatarUri;
     private Drawable avatarDrawable;
-    private String label;
-    private String info;
+    private final String label;
+    private final String info;
 
     public Chip(@NonNull Object id, @Nullable Uri avatarUri, @NonNull String label, @Nullable String info) {
         this.id = id;

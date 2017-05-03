@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,13 +17,11 @@ import com.pchmn.materialchips.R;
 import com.pchmn.materialchips.model.ChipInterface;
 import com.pchmn.materialchips.util.ColorUtil;
 import com.pchmn.materialchips.util.LetterTileProvider;
-import com.pchmn.materialchips.util.ViewUtil;
 
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
@@ -34,20 +31,17 @@ import static android.view.View.GONE;
 
 public class FilterableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
 
-    private static final String TAG = FilterableAdapter.class.toString();
-    // context
-    private Context mContext;
     // list
-    private List<ChipInterface> mOriginalList = new ArrayList<>();
-    private List<ChipInterface> mChipList = new ArrayList<>();
-    private List<ChipInterface> mFilteredList = new ArrayList<>();
+    private final List<ChipInterface> mOriginalList = new ArrayList<>();
+    private final List<ChipInterface> mChipList = new ArrayList<>();
+    private final List<ChipInterface> mFilteredList = new ArrayList<>();
     private ChipFilter mFilter;
-    private ChipsInput mChipsInput;
-    private LetterTileProvider mLetterTileProvider;
-    private ColorStateList mBackgroundColor;
-    private ColorStateList mTextColor;
+    private final ChipsInput mChipsInput;
+    private final LetterTileProvider mLetterTileProvider;
+    private final ColorStateList mBackgroundColor;
+    private final ColorStateList mTextColor;
     // recycler
-    private RecyclerView mRecyclerView;
+    private final RecyclerView mRecyclerView;
 
 
     public FilterableAdapter(Context context,
@@ -56,20 +50,16 @@ public class FilterableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                              ChipsInput chipsInput,
                              ColorStateList backgroundColor,
                              ColorStateList textColor) {
-        mContext = context;
         mRecyclerView = recyclerView;
-        Collections.sort(chipList, new Comparator<ChipInterface>() {
-            @Override
-            public int compare(ChipInterface o1, ChipInterface o2) {
-                Collator collator = Collator.getInstance(Locale.getDefault());
-                collator.setStrength(Collator.PRIMARY);
-                return collator.compare(o1.getLabel(), o2.getLabel());
-            }
+        Collections.sort(chipList, (Comparator<ChipInterface>) (o1, o2) -> {
+            Collator collator = Collator.getInstance(Locale.getDefault());
+            collator.setStrength(Collator.PRIMARY);
+            return collator.compare(o1.getLabel(), o2.getLabel());
         });
         mOriginalList.addAll(chipList);
         mChipList.addAll(chipList);
         mFilteredList.addAll(chipList);
-        mLetterTileProvider = new LetterTileProvider(mContext);
+        mLetterTileProvider = new LetterTileProvider(context);
         mBackgroundColor = backgroundColor;
         mTextColor = textColor;
         mChipsInput = chipsInput;
@@ -94,9 +84,9 @@ public class FilterableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private class ItemViewHolder extends RecyclerView.ViewHolder {
 
-        private CircleImageView mAvatar;
-        private TextView mLabel;
-        private TextView mInfo;
+        private final CircleImageView mAvatar;
+        private final TextView mLabel;
+        private final TextView mInfo;
 
         ItemViewHolder(View view) {
             super(view);
@@ -108,8 +98,7 @@ public class FilterableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_list_filterable, parent, false);
-        return new ItemViewHolder(view);
+        return new ItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_filterable, parent, false));
     }
 
     @Override
@@ -155,13 +144,11 @@ public class FilterableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
 
         // onclick
-        itemViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        itemViewHolder.itemView.setOnClickListener(v -> {
                 if(mChipsInput != null)
                     mChipsInput.addChip(chip);
             }
-        });
+        );
     }
 
     @Override
@@ -176,19 +163,17 @@ public class FilterableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public Filter getFilter() {
         if(mFilter == null)
-            mFilter = new ChipFilter(this, mChipList);
+            mFilter = new ChipFilter(mChipList);
         return mFilter;
     }
 
     private class ChipFilter extends Filter {
 
-        private FilterableAdapter adapter;
-        private List<ChipInterface> originalList;
-        private List<ChipInterface> filteredList;
+        private final List<ChipInterface> originalList;
+        private final List<ChipInterface> filteredList;
 
-        public ChipFilter(FilterableAdapter adapter, List<ChipInterface> originalList) {
+        ChipFilter(List<ChipInterface> originalList) {
             super();
-            this.adapter = adapter;
             this.originalList = originalList;
             this.filteredList = new ArrayList<>();
         }
@@ -217,6 +202,7 @@ public class FilterableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         protected void publishResults(CharSequence constraint, FilterResults results) {
             mFilteredList.clear();
             mFilteredList.addAll((ArrayList<ChipInterface>) results.values);
@@ -241,22 +227,16 @@ public class FilterableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             mChipList.add(chip);
             mFilteredList.add(chip);
             // sort original list
-            Collections.sort(mChipList, new Comparator<ChipInterface>() {
-                @Override
-                public int compare(ChipInterface o1, ChipInterface o2) {
-                    Collator collator = Collator.getInstance(Locale.getDefault());
-                    collator.setStrength(Collator.PRIMARY);
-                    return collator.compare(o1.getLabel(), o2.getLabel());
-                }
+            Collections.sort(mChipList, (o1, o2) -> {
+                Collator collator = Collator.getInstance(Locale.getDefault());
+                collator.setStrength(Collator.PRIMARY);
+                return collator.compare(o1.getLabel(), o2.getLabel());
             });
             // sort filtered list
-            Collections.sort(mFilteredList, new Comparator<ChipInterface>() {
-                @Override
-                public int compare(ChipInterface o1, ChipInterface o2) {
-                    Collator collator = Collator.getInstance(Locale.getDefault());
-                    collator.setStrength(Collator.PRIMARY);
-                    return collator.compare(o1.getLabel(), o2.getLabel());
-                }
+            Collections.sort(mFilteredList, (o1, o2) -> {
+                Collator collator = Collator.getInstance(Locale.getDefault());
+                collator.setStrength(Collator.PRIMARY);
+                return collator.compare(o1.getLabel(), o2.getLabel());
             });
 
             notifyDataSetChanged();

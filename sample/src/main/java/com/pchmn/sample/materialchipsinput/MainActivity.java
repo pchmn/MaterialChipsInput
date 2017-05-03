@@ -13,7 +13,6 @@ import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = MainActivity.class.toString();
     @BindView(R.id.contacts_button) Button mContactListButton;
     @BindView(R.id.custom_chips_button) Button mCustomChipsButton;
     private int mStackLevel = 0;
@@ -25,13 +24,9 @@ public class MainActivity extends AppCompatActivity {
         // butter knife
         ButterKnife.bind(this);
 
-        mContactListButton.setOnClickListener(view -> {
-            startActivity(new Intent(MainActivity.this, ContactListActivity.class));
-        });
+        mContactListButton.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, ContactListActivity.class)));
 
-        mCustomChipsButton.setOnClickListener(view -> {
-            startActivity(new Intent(MainActivity.this, ChipExamplesActivity.class));
-        });
+        mCustomChipsButton.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, ChipExamplesActivity.class)));
     }
 
     @OnClick(R.id.dialog_fragment)

@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">MaterialChipsInput</string>
+    <string name="delete_button_content_desc">Delete</string>
 
     <!-- LetterTileProvider -->
     <!-- All of the possible tile background colors -->

@@ -17,15 +17,14 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 
 import com.pchmn.materialchips.views.ChipsInputEditText;
 import com.pchmn.materialchips.views.DetailedChipView;
 
 public class MyWindowCallback implements Window.Callback {
 
-    private Window.Callback mLocalCallback;
-    private Activity mActivity;
+    private final Window.Callback mLocalCallback;
+    private final Activity mActivity;
 
     public MyWindowCallback(Window.Callback localCallback, Activity activity) {
         mLocalCallback = localCallback;
