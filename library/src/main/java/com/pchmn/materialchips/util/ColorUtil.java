@@ -8,9 +8,10 @@ import android.util.TypedValue;
 
 import com.pchmn.materialchips.R;
 
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class ColorUtil {
 
-    private static int lighter(int color, float factor) {
+    public static int lighter(int color, float factor) {
         int red = (int) ((Color.red(color) * (1 - factor) / 255 + factor) * 255);
         int green = (int) ((Color.green(color) * (1 - factor) / 255 + factor) * 255);
         int blue = (int) ((Color.blue(color) * (1 - factor) / 255 + factor) * 255);
