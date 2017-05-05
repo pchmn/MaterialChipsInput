@@ -1,5 +1,13 @@
 # CHANGELOG
 
+# 1.0.6
+
+Fixed bug related with [issue #7](https://github.com/pchmn/MaterialChipsInput/issues/7)
+
+# 1.0.5
+
+Fixed bug related with [issue #13](https://github.com/pchmn/MaterialChipsInput/issues/13)
+
 # 1.0.4
 
 Fixed bug with `ChipView` label in v1.0.3
