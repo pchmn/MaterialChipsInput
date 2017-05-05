@@ -70,6 +70,13 @@ public class FilterableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 return mCollator.compare(o1.getLabel(), o2.getLabel());
             }
         };
+        // remove chips that do not have label
+        int count = 0;
+        for(ChipInterface chipInterface: chipList) {
+            if(chipInterface.getLabel() == null)
+                chipList.remove(count);
+            count++;
+        }
         sortList(chipList);
         mOriginalList.addAll(chipList);
         mChipList.addAll(chipList);
