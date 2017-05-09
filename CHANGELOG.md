@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 1.0.8
+
+Fixed bug related with [issue #16](https://github.com/pchmn/MaterialChipsInput/issues/16)
+
 # 1.0.6 - 1.0.7
 
 Fixed bug related with [issue #7](https://github.com/pchmn/MaterialChipsInput/issues/7)
