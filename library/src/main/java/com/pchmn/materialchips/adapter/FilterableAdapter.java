@@ -25,6 +25,7 @@ import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -71,11 +72,10 @@ public class FilterableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             }
         };
         // remove chips that do not have label
-        int count = 0;
-        for(ChipInterface chipInterface: chipList) {
-            if(chipInterface.getLabel() == null)
-                chipList.remove(count);
-            count++;
+        Iterator<? extends ChipInterface> iterator = chipList.iterator();
+        while(iterator.hasNext()) {
+            if(iterator.next().getLabel() == null)
+                iterator.remove();
         }
         sortList(chipList);
         mOriginalList.addAll(chipList);
