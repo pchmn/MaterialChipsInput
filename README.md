@@ -26,7 +26,7 @@ allprojects {
 In your app level build.gradle :
 ```java
 dependencies {
-    compile 'com.github.pchmn:MaterialChipsInput:1.0.4'
+    compile 'com.github.pchmn:MaterialChipsInput:1.0.5'
 }      
 ```
 <br><br>
