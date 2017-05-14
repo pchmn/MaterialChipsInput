@@ -5,17 +5,13 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.pchmn.materialchips.ChipView;
 import com.pchmn.materialchips.ChipsInput;
-import com.pchmn.materialchips.model.Chip;
 import com.pchmn.materialchips.model.ChipInterface;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
@@ -71,17 +67,16 @@ public class ContactListActivity extends AppCompatActivity {
         });
 
         // show selected chips
-        mValidateButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                String listString = "";
-                for(ContactChip chip: (List<ContactChip>)  mChipsInput.getSelectedChipList()) {
-                    listString += chip.getLabel() + " (" + (chip.getInfo() != null ? chip.getInfo(): "") + ")" + ", ";
-                }
-
-                mChipListText.setText(listString);
+        mValidateButton.setOnClickListener(v -> {
+            StringBuilder listString = new StringBuilder();
+            for(ChipInterface chip: mChipsInput.getSelectedChipList()) {
+                listString.append(chip.getLabel())
+                        .append(" (")
+                        .append(chip.getInfo() != null ? chip.getInfo() : "")
+                        .append(")")
+                        .append(", ");
             }
+            mChipListText.setText(listString.toString());
         });
     }
 
@@ -109,13 +104,13 @@ public class ContactListActivity extends AppCompatActivity {
                     Cursor pCur = this.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                             null,
                             ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", new String[] { id }, null);
+                    if (pCur != null) {
+                        while (pCur.moveToNext()) {
+                            phoneNumber = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                        }
 
-                    while (pCur != null && pCur.moveToNext()) {
-                        phoneNumber = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                        pCur.close();
                     }
-
-                    pCur.close();
-
                 }
 
                 ContactChip contactChip = new ContactChip(id, avatarUri, name, phoneNumber);

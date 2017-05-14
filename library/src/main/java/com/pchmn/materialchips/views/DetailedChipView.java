@@ -1,14 +1,11 @@
 package com.pchmn.materialchips.views;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
@@ -20,23 +17,16 @@ import android.widget.TextView;
 
 import com.pchmn.materialchips.R;
 import com.pchmn.materialchips.R2;
-import com.pchmn.materialchips.model.Chip;
 import com.pchmn.materialchips.model.ChipInterface;
 import com.pchmn.materialchips.util.ColorUtil;
 import com.pchmn.materialchips.util.LetterTileProvider;
-import com.pchmn.materialchips.util.MyWindowCallback;
-import com.pchmn.materialchips.util.ViewUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-
 public class DetailedChipView extends RelativeLayout {
 
-    private static final String TAG = DetailedChipView.class.toString();
-    // context
-    private Context mContext;
     // xml elements
     @BindView(R2.id.content) RelativeLayout mContentLayout;
     @BindView(R2.id.avatar_icon) CircleImageView mAvatarIconImageView;
@@ -50,13 +40,11 @@ public class DetailedChipView extends RelativeLayout {
 
     public DetailedChipView(Context context) {
         super(context);
-        mContext = context;
         init(null);
     }
 
     public DetailedChipView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mContext = context;
         init(attrs);
     }
 
@@ -65,13 +53,14 @@ public class DetailedChipView extends RelativeLayout {
      *
      * @param attrs the attributes
      */
+    @SuppressWarnings("unused")
     private void init(AttributeSet attrs) {
         // inflate layout
         View rootView = inflate(getContext(), R.layout.detailed_chip_view, this);
         // butter knife
         ButterKnife.bind(this, rootView);
         // letter tile provider
-        mLetterTileProvider = new LetterTileProvider(mContext);
+        mLetterTileProvider = new LetterTileProvider(getContext());
 
         // hide on first
         setVisibility(GONE);
@@ -82,7 +71,7 @@ public class DetailedChipView extends RelativeLayout {
     /**
      * Hide the view on touch outside of it
      */
-    private void hideOnTouchOutside() {
+    public void hideOnTouchOutside() {
         // set focusable
         setFocusable(true);
         setFocusableInTouchMode(true);
@@ -151,7 +140,7 @@ public class DetailedChipView extends RelativeLayout {
     }
 
     public int getBackgroundColor() {
-        return mBackgroundColor == null ? ContextCompat.getColor(mContext, R.color.colorAccent) : mBackgroundColor.getDefaultColor();
+        return mBackgroundColor == null ? ContextCompat.getColor(getContext(), R.color.colorAccent) : mBackgroundColor.getDefaultColor();
     }
 
     public void setDeleteIconColor(ColorStateList color) {
@@ -175,7 +164,7 @@ public class DetailedChipView extends RelativeLayout {
     }
 
     public static class Builder {
-        private Context context;
+        private final Context context;
         private Uri avatarUri;
         private Drawable avatarDrawable;
         private String name;

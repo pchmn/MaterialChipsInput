@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +17,9 @@ import android.widget.RelativeLayout;
 import com.pchmn.materialchips.ChipView;
 import com.pchmn.materialchips.ChipsInput;
 import com.pchmn.materialchips.model.ChipInterface;
+import com.pchmn.materialchips.util.ViewUtil;
 import com.pchmn.materialchips.views.ChipsInputEditText;
 import com.pchmn.materialchips.views.DetailedChipView;
-import com.pchmn.materialchips.model.Chip;
-import com.pchmn.materialchips.util.ViewUtil;
 import com.pchmn.materialchips.views.FilterableListView;
 
 import java.util.ArrayList;
@@ -31,15 +29,14 @@ import java.util.List;
 
 public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private static final String TAG = ChipsAdapter.class.toString();
     private static final int TYPE_EDIT_TEXT = 0;
     private static final int TYPE_ITEM = 1;
-    private Context mContext;
-    private ChipsInput mChipsInput;
-    private List<ChipInterface> mChipList = new ArrayList<>();
-    private String mHintLabel;
-    private ChipsInputEditText mEditText;
-    private RecyclerView mRecycler;
+    private final Context mContext;
+    private final ChipsInput mChipsInput;
+    private final List<ChipInterface> mChipList = new ArrayList<>();
+    private final String mHintLabel;
+    private final ChipsInputEditText mEditText;
+    private final RecyclerView mRecycler;
 
     public ChipsAdapter(Context context, ChipsInput chipsInput, RecyclerView recycler) {
         mContext = context;
@@ -133,18 +130,15 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         mEditText.setInputType(InputType.TYPE_TEXT_VARIATION_FILTER | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
 
         // handle back space
-        mEditText.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                // backspace
-                if(event.getAction() == KeyEvent.ACTION_DOWN
-                        && event.getKeyCode() == KeyEvent.KEYCODE_DEL) {
-                    // remove last chip
-                    if(mChipList.size() > 0 && mEditText.getText().toString().length() == 0)
-                        removeChip(mChipList.size() - 1);
-                }
-                return false;
+        mEditText.setOnKeyListener((v, keyCode, event) -> {
+            // backspace
+            if(event.getAction() == KeyEvent.ACTION_DOWN
+                    && event.getKeyCode() == KeyEvent.KEYCODE_DEL) {
+                // remove last chip
+                if(mChipList.size() > 0 && mEditText.getText().toString().length() == 0)
+                    removeChip(mChipList.size() - 1);
             }
+            return false;
         });
 
         // text changed
@@ -202,34 +196,23 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private void handleClickOnEditText(ChipView chipView, final int position) {
         // delete chip
-        chipView.setOnDeleteClicked(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                removeChip(position);
-            }
-        });
+        chipView.setOnDeleteClicked(v -> removeChip(position));
 
         // show detailed chip
         if(mChipsInput.isShowChipDetailed()) {
-            chipView.setOnChipClicked(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // get chip position
-                    int[] coord = new int[2];
-                    v.getLocationInWindow(coord);
+            chipView.setOnChipClicked(v -> {
+                // get chip position
+                int[] coord = new int[2];
+                v.getLocationInWindow(coord);
 
-                    final DetailedChipView detailedChipView = mChipsInput.getDetailedChipView(getItem(position));
-                    setDetailedChipViewPosition(detailedChipView, coord);
+                final DetailedChipView detailedChipView = mChipsInput.getDetailedChipView(getItem(position));
+                setDetailedChipViewPosition(detailedChipView, coord);
 
-                    // delete button
-                    detailedChipView.setOnDeleteClicked(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            removeChip(position);
-                            detailedChipView.fadeOut();
-                        }
-                    });
-                }
+                // delete button
+                detailedChipView.setOnDeleteClicked(v1 -> {
+                    removeChip(position);
+                    detailedChipView.fadeOut();
+                });
             });
         }
     }
@@ -301,7 +284,7 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    public void removeChip(int position) {
+    private void removeChip(int position) {
         ChipInterface chip = mChipList.get(position);
         // remove contact
         mChipList.remove(position);

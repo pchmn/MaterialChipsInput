@@ -8,6 +8,7 @@ import android.util.TypedValue;
 
 import com.pchmn.materialchips.R;
 
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class ColorUtil {
 
     public static int lighter(int color, float factor) {

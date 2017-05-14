@@ -1,6 +1,5 @@
 package com.pchmn.materialchips;
 
-
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -10,14 +9,12 @@ import android.net.Uri;
 import android.support.annotation.ColorInt;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.pchmn.materialchips.model.Chip;
 import com.pchmn.materialchips.model.ChipInterface;
 import com.pchmn.materialchips.util.LetterTileProvider;
 import com.pchmn.materialchips.util.ViewUtil;
@@ -26,11 +23,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+@SuppressWarnings("unused")
 public class ChipView extends RelativeLayout {
 
-    private static final String TAG = ChipView.class.toString();
-    // context
-    private Context mContext;
     // xml elements
     @BindView(R2.id.content) LinearLayout mContentLayout;
     @BindView(R2.id.icon) CircleImageView mAvatarIconImageView;
@@ -54,13 +49,11 @@ public class ChipView extends RelativeLayout {
 
     public ChipView(Context context) {
         super(context);
-        mContext = context;
         init(null);
     }
 
     public ChipView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mContext = context;
         init(attrs);
     }
 
@@ -71,15 +64,16 @@ public class ChipView extends RelativeLayout {
      */
     private void init(AttributeSet attrs) {
         // inflate layout
-        View rootView = inflate(getContext(), R.layout.chip_view, this);
+        Context context = getContext();
+        View rootView = inflate(context, R.layout.chip_view, this);
         // butter knife
         ButterKnife.bind(this, rootView);
         // letter tile provider
-        mLetterTileProvider = new LetterTileProvider(mContext);
+        mLetterTileProvider = new LetterTileProvider(context);
 
         // attributes
         if(attrs != null) {
-            TypedArray a = mContext.getTheme().obtainStyledAttributes(
+            TypedArray a = context.getTheme().obtainStyledAttributes(
                     attrs,
                     R.styleable.ChipView,
                     0, 0);
@@ -91,13 +85,13 @@ public class ChipView extends RelativeLayout {
                 // avatar icon
                 mHasAvatarIcon = a.getBoolean(R.styleable.ChipView_hasAvatarIcon, false);
                 int avatarIconId = a.getResourceId(R.styleable.ChipView_avatarIcon, NONE);
-                if(avatarIconId != NONE) mAvatarIconDrawable = ContextCompat.getDrawable(mContext, avatarIconId);
+                if(avatarIconId != NONE) mAvatarIconDrawable = ContextCompat.getDrawable(context, avatarIconId);
                 if(mAvatarIconDrawable != null) mHasAvatarIcon = true;
                 // delete icon
                 mDeletable = a.getBoolean(R.styleable.ChipView_deletable, false);
                 mDeleteIconColor = a.getColorStateList(R.styleable.ChipView_deleteIconColor);
                 int deleteIconId = a.getResourceId(R.styleable.ChipView_deleteIcon, NONE);
-                if(deleteIconId != NONE) mDeleteIcon = ContextCompat.getDrawable(mContext, deleteIconId);
+                if(deleteIconId != NONE) mDeleteIcon = ContextCompat.getDrawable(context, deleteIconId);
                 // background color
                 mBackgroundColor = a.getColorStateList(R.styleable.ChipView_backgroundColor);
             }
@@ -241,7 +235,7 @@ public class ChipView extends RelativeLayout {
     }
 
     /**
-     * Show or hide delte button
+     * Show or hide delete button
      *
      * @param deletable true to show, false to hide
      */
@@ -356,8 +350,9 @@ public class ChipView extends RelativeLayout {
     /**
      * Builder class
      */
+    @SuppressWarnings("WeakerAccess")
     public static class Builder {
-        private Context context;
+        private final Context context;
         private String label;
         private ColorStateList labelColor;
         private boolean hasAvatarIcon = false;

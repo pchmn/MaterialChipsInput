@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MaterialChipsInput</string>
+    <string name="validate">Validate</string>
+    <string name="contact_list_example">Contact list example</string>
+    <string name="custom_chips_examples">Custom chips examples</string>
+    <string name="dialog_fragment">Dialog Fragment</string>
 </resources>

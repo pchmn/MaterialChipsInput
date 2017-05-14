@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="300dp"
     android:layout_height="100dp"
@@ -40,7 +41,8 @@
             android:layout_toLeftOf="@+id/delete_button"
             android:layout_centerVertical="true"
             android:paddingTop="16dp"
-            android:paddingBottom="16dp">
+            android:paddingBottom="16dp"
+            tools:ignore="RtlHardcoded">
 
             <!-- name -->
             <TextView
@@ -51,7 +53,7 @@
                 android:maxLines="1"
                 android:scrollHorizontally="true"
                 android:textSize="16sp"
-                android:text="Contact name sdfdsfdsfdgs"/>
+                tools:text="Contact name sdfdsfdsfdgs"/>
 
             <!-- info -->
             <TextView
@@ -63,7 +65,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:scrollHorizontally="true"
-                android:text="paul@gmail.comdfdgdgsdggdgdgdgdsgdgdgdg"/>
+                tools:text="paul@gmail.comdfdgdgsdggdgdgdgdsgdgdgdg"/>
 
         </LinearLayout>
 
@@ -76,7 +78,9 @@
             android:layout_centerVertical="true"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:layout_marginRight="10dp"
-            android:src="@drawable/ic_cancel_white_24dp"/>
+            android:src="@drawable/ic_cancel_white_24dp"
+            tools:ignore="RtlHardcoded"
+            android:contentDescription="@string/delete_button_content_desc" />
         
     </RelativeLayout>
 

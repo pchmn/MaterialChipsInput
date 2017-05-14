@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -14,19 +13,19 @@
         android:id="@+id/contacts_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Contact list example"/>
+        android:text="@string/contact_list_example"/>
 
     <Button
         android:id="@+id/custom_chips_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Custom chips examples"/>
+        android:text="@string/custom_chips_examples"/>
 
     <Button
         android:visibility="gone"
         android:id="@+id/dialog_fragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Dialog Fragment"/>
+        android:text="@string/dialog_fragment"/>
 
 </LinearLayout>

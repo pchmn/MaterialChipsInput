@@ -34,7 +34,7 @@ public class ScrollViewMaxHeight extends NestedScrollView {
         }
     }
 
-    public void setMaxHeight(int height) {
+    protected void setMaxHeight(int height) {
         mMaxHeight = height;
         int heightMeasureSpec = MeasureSpec.makeMeasureSpec(mMaxHeight, MeasureSpec.AT_MOST);
         measure(mWidthMeasureSpec, heightMeasureSpec);
