@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pchmn.materialchips.ChipsInput;
 import com.pchmn.materialchips.R;
@@ -24,6 +25,7 @@ import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -48,6 +50,9 @@ public class FilterableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private ColorStateList mTextColor;
     // recycler
     private RecyclerView mRecyclerView;
+    // sort
+    private Comparator<ChipInterface> mComparator;
+    private Collator mCollator;
 
 
     public FilterableAdapter(Context context,
@@ -58,14 +63,21 @@ public class FilterableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                              ColorStateList textColor) {
         mContext = context;
         mRecyclerView = recyclerView;
-        Collections.sort(chipList, new Comparator<ChipInterface>() {
+        mCollator = Collator.getInstance(Locale.getDefault());
+        mCollator.setStrength(Collator.PRIMARY);
+        mComparator = new Comparator<ChipInterface>() {
             @Override
             public int compare(ChipInterface o1, ChipInterface o2) {
-                Collator collator = Collator.getInstance(Locale.getDefault());
-                collator.setStrength(Collator.PRIMARY);
-                return collator.compare(o1.getLabel(), o2.getLabel());
+                return mCollator.compare(o1.getLabel(), o2.getLabel());
             }
-        });
+        };
+        // remove chips that do not have label
+        Iterator<? extends ChipInterface> iterator = chipList.iterator();
+        while(iterator.hasNext()) {
+            if(iterator.next().getLabel() == null)
+                iterator.remove();
+        }
+        sortList(chipList);
         mOriginalList.addAll(chipList);
         mChipList.addAll(chipList);
         mFilteredList.addAll(chipList);
@@ -241,23 +253,9 @@ public class FilterableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             mChipList.add(chip);
             mFilteredList.add(chip);
             // sort original list
-            Collections.sort(mChipList, new Comparator<ChipInterface>() {
-                @Override
-                public int compare(ChipInterface o1, ChipInterface o2) {
-                    Collator collator = Collator.getInstance(Locale.getDefault());
-                    collator.setStrength(Collator.PRIMARY);
-                    return collator.compare(o1.getLabel(), o2.getLabel());
-                }
-            });
+            sortList(mChipList);
             // sort filtered list
-            Collections.sort(mFilteredList, new Comparator<ChipInterface>() {
-                @Override
-                public int compare(ChipInterface o1, ChipInterface o2) {
-                    Collator collator = Collator.getInstance(Locale.getDefault());
-                    collator.setStrength(Collator.PRIMARY);
-                    return collator.compare(o1.getLabel(), o2.getLabel());
-                }
-            });
+            sortList(mFilteredList);
 
             notifyDataSetChanged();
         }
@@ -271,5 +269,7 @@ public class FilterableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         return false;
     }
 
-
+    private void sortList(List<? extends ChipInterface> list) {
+        Collections.sort(list, mComparator);
+    }
 }

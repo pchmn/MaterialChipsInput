@@ -18,7 +18,7 @@ public class ChipsInputEditText extends android.support.v7.widget.AppCompatEditT
     }
 
     public boolean isFilterableListVisible() {
-        return filterableListView.getVisibility() == VISIBLE;
+        return filterableListView != null && filterableListView.getVisibility() == VISIBLE;
     }
 
     public FilterableListView getFilterableListView() {
