@@ -13,10 +13,18 @@ public class Chip implements ChipInterface {
     private Drawable avatarDrawable;
     private String label;
     private String info;
+    private String avatarUrl;
 
     public Chip(@NonNull Object id, @Nullable Uri avatarUri, @NonNull String label, @Nullable String info) {
         this.id = id;
         this.avatarUri = avatarUri;
+        this.label = label;
+        this.info = info;
+    }
+
+    public Chip(@NonNull Object id, @Nullable String avatarUrl, @NonNull String label, @Nullable String info) {
+        this.id = id;
+        this.avatarUrl = avatarUrl;
         this.label = label;
         this.info = info;
     }
@@ -30,6 +38,12 @@ public class Chip implements ChipInterface {
 
     public Chip(@Nullable Uri avatarUri, @NonNull String label, @Nullable String info) {
         this.avatarUri = avatarUri;
+        this.label = label;
+        this.info = info;
+    }
+
+    public Chip(@Nullable String avatarUrl, @NonNull String label, @Nullable String info) {
+        this.avatarUrl = avatarUrl;
         this.label = label;
         this.info = info;
     }
@@ -74,5 +88,9 @@ public class Chip implements ChipInterface {
     @Override
     public String getInfo() {
         return info;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
     }
 }

@@ -6,6 +6,7 @@
         <attr name="labelColor" format="color" />
         <attr name="hasAvatarIcon" format="boolean" />
         <attr name="avatarIcon" format="reference" />
+        <attr name="avatarUrl" format="string" />
         <attr name="deletable" format="boolean" />
         <attr name="deleteIcon" format="reference" />
         <attr name="deleteIconColor" format="color" />

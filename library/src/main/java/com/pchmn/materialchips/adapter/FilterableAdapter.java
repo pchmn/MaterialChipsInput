@@ -5,28 +5,25 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.pchmn.materialchips.ChipsInput;
 import com.pchmn.materialchips.R;
 import com.pchmn.materialchips.model.ChipInterface;
 import com.pchmn.materialchips.util.ColorUtil;
 import com.pchmn.materialchips.util.LetterTileProvider;
-import com.pchmn.materialchips.util.ViewUtil;
+import com.squareup.picasso.Picasso;
 
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
@@ -126,7 +123,7 @@ public class FilterableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
+        final ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
         final ChipInterface chip = getItem(position);
 
         // avatar
@@ -137,6 +134,14 @@ public class FilterableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         else if(mChipsInput.chipHasAvatarIcon() && chip.getAvatarDrawable() != null) {
             itemViewHolder.mAvatar.setVisibility(View.VISIBLE);
             itemViewHolder.mAvatar.setImageDrawable(chip.getAvatarDrawable());
+        }
+        else if(mChipsInput.chipHasAvatarIcon() && chip.getAvatarUrl() != null){
+            //set image from url
+            Picasso.with(mContext)
+                    .load(chip.getAvatarUrl())
+                    .error(R.drawable.ic_person_white_24dp)
+                    .into(itemViewHolder.mAvatar);
+
         }
         else if(mChipsInput.chipHasAvatarIcon()) {
             itemViewHolder.mAvatar.setVisibility(View.VISIBLE);

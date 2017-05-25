@@ -4,23 +4,25 @@ package com.pchmn.materialchips;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.ColorInt;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.pchmn.materialchips.model.Chip;
 import com.pchmn.materialchips.model.ChipInterface;
 import com.pchmn.materialchips.util.LetterTileProvider;
 import com.pchmn.materialchips.util.ViewUtil;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,6 +45,7 @@ public class ChipView extends RelativeLayout {
     private boolean mHasAvatarIcon = false;
     private Drawable mAvatarIconDrawable;
     private Uri mAvatarIconUri;
+    private String mAvatarUrl;
     private boolean mDeletable = false;
     private Drawable mDeleteIcon;
     private ColorStateList mDeleteIconColor;
@@ -92,7 +95,8 @@ public class ChipView extends RelativeLayout {
                 mHasAvatarIcon = a.getBoolean(R.styleable.ChipView_hasAvatarIcon, false);
                 int avatarIconId = a.getResourceId(R.styleable.ChipView_avatarIcon, NONE);
                 if(avatarIconId != NONE) mAvatarIconDrawable = ContextCompat.getDrawable(mContext, avatarIconId);
-                if(mAvatarIconDrawable != null) mHasAvatarIcon = true;
+                mAvatarUrl = a.getString(R.styleable.ChipView_avatarUrl);
+                if(mAvatarIconDrawable != null || (mAvatarUrl!=null && !mAvatarUrl.equals(""))) mHasAvatarIcon = true;
                 // delete icon
                 mDeletable = a.getBoolean(R.styleable.ChipView_deletable, false);
                 mDeleteIconColor = a.getColorStateList(R.styleable.ChipView_deleteIconColor);
@@ -137,6 +141,7 @@ public class ChipView extends RelativeLayout {
         // icon
         mAvatarIconUri = mChip.getAvatarUri();
         mAvatarIconDrawable = mChip.getAvatarDrawable();
+        mAvatarUrl = mChip.getAvatarUrl();
 
         // inflate
         inflateWithAttributes();
@@ -211,6 +216,8 @@ public class ChipView extends RelativeLayout {
             // set icon
             if(mAvatarIconUri != null)
                 mAvatarIconImageView.setImageURI(mAvatarIconUri);
+            else if(mAvatarUrl !=null)
+                setImageFromUlr();
             else if(mAvatarIconDrawable != null)
                 mAvatarIconImageView.setImageDrawable(mAvatarIconDrawable);
             else
@@ -218,6 +225,46 @@ public class ChipView extends RelativeLayout {
         }
     }
 
+    private void setImageFromUlr() {
+
+        Picasso.Builder builder = new Picasso.Builder(mContext);
+
+
+        Target target = new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                mAvatarIconImageView.setImageDrawable(new BitmapDrawable(mContext.getResources(),bitmap));
+            }
+
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+                mAvatarIconImageView.setImageDrawable(errorDrawable);
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+               mAvatarIconImageView.setImageDrawable(placeHolderDrawable);
+            }
+
+        };
+
+        builder.build().load(mAvatarUrl).error(R.drawable.ic_person_white_24dp)
+                .placeholder(R.drawable.ic_person_white_24dp)
+                .into(target);
+        mAvatarIconImageView.setTag(target);
+    }
+
+
+    /**
+     * Set avatar icon
+     *
+     * @param avatarUrl the pictures's url to set
+     */
+    public void setAvatarIcon(String avatarUrl) {
+        mAvatarUrl = avatarUrl;
+        mHasAvatarIcon = true;
+        inflateWithAttributes();
+    }
     /**
      * Set avatar icon
      *
@@ -362,6 +409,7 @@ public class ChipView extends RelativeLayout {
         private ColorStateList labelColor;
         private boolean hasAvatarIcon = false;
         private Uri avatarIconUri;
+        private String avatarUrl;
         private Drawable avatarIconDrawable;
         private boolean deletable = false;
         private Drawable deleteIcon;
@@ -393,6 +441,10 @@ public class ChipView extends RelativeLayout {
             return this;
         }
 
+        public Builder avatarIcon(String avatarUrl) {
+            this.avatarUrl = avatarUrl;
+            return this;
+        }
         public Builder avatarIcon(Drawable avatarIcon) {
             this.avatarIconDrawable = avatarIcon;
             return this;
@@ -423,6 +475,7 @@ public class ChipView extends RelativeLayout {
             this.label = chip.getLabel();
             this.avatarIconDrawable = chip.getAvatarDrawable();
             this.avatarIconUri = chip.getAvatarUri();
+            this.avatarUrl =chip.getAvatarUrl();
             return this;
         }
 
@@ -443,6 +496,7 @@ public class ChipView extends RelativeLayout {
         chipView.mDeleteIconColor = builder.deleteIconColor;
         chipView.mBackgroundColor = builder.backgroundColor;
         chipView.mChip = builder.chip;
+        chipView.mAvatarUrl = builder.avatarUrl;
         chipView.inflateWithAttributes();
 
         return chipView;

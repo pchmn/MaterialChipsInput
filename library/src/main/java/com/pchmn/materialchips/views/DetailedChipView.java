@@ -26,6 +26,7 @@ import com.pchmn.materialchips.util.ColorUtil;
 import com.pchmn.materialchips.util.LetterTileProvider;
 import com.pchmn.materialchips.util.MyWindowCallback;
 import com.pchmn.materialchips.util.ViewUtil;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -118,6 +119,11 @@ public class DetailedChipView extends RelativeLayout {
         mAvatarIconImageView.setImageDrawable(icon);
     }
 
+    private void setAvatarFromUrl(String url) {
+
+        Picasso.with(mContext).load(url).error(R.drawable.ic_person_white_24dp).into(mAvatarIconImageView);;
+    }
+
     public void setAvatarIcon(Bitmap icon) {
         mAvatarIconImageView.setImageBitmap(icon);
     }
@@ -180,9 +186,11 @@ public class DetailedChipView extends RelativeLayout {
         private Drawable avatarDrawable;
         private String name;
         private String info;
+        private String avatarUrl;
         private ColorStateList textColor;
         private ColorStateList backgroundColor;
         private ColorStateList deleteIconColor;
+
 
         public Builder(Context context) {
             this.context = context;
@@ -195,6 +203,11 @@ public class DetailedChipView extends RelativeLayout {
 
         public Builder avatar(Drawable avatarDrawable) {
             this.avatarDrawable = avatarDrawable;
+            return this;
+        }
+
+        public Builder avatarUrl(String avatarUrl) {
+            this.avatarUrl = avatarUrl;
             return this;
         }
 
@@ -213,6 +226,7 @@ public class DetailedChipView extends RelativeLayout {
             this.avatarDrawable = chip.getAvatarDrawable();
             this.name = chip.getLabel();
             this.info = chip.getInfo();
+            this.avatarUrl = chip.getAvatarUrl();
             return this;
         }
 
@@ -241,6 +255,8 @@ public class DetailedChipView extends RelativeLayout {
         // avatar
         if(builder.avatarUri != null)
             detailedChipView.setAvatarIcon(builder.avatarUri);
+        else if(builder.avatarUrl != null )
+            detailedChipView.setAvatarFromUrl(builder.avatarUrl);
         else if(builder.avatarDrawable != null)
             detailedChipView.setAvatarIcon(builder.avatarDrawable);
         else
@@ -270,4 +286,6 @@ public class DetailedChipView extends RelativeLayout {
         detailedChipView.setInfo(builder.info);
         return detailedChipView;
     }
+
+
 }

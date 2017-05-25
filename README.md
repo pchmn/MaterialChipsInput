@@ -18,7 +18,7 @@ In your project level build.gradle :
 allprojects {
     repositories {
         ...
-        maven { url "https://jitpack.io" }
+        maven { avatarUrl "https://jitpack.io" }
     }
 }       
 ```
