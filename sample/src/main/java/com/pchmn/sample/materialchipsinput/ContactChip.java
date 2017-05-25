@@ -12,12 +12,21 @@ public class ContactChip implements ChipInterface {
     private Uri avatarUri;
     private String name;
     private String phoneNumber;
+    private String avatarUrl;
 
     public ContactChip(String id, Uri avatarUri, String name, String phoneNumber) {
         this.id = id;
         this.avatarUri = avatarUri;
         this.name = name;
         this.phoneNumber = phoneNumber;
+    }
+
+    public ContactChip(String id, Uri avatarUri, String name, String phoneNumber, String avatarUrl) {
+        this.id = id;
+        this.avatarUri = avatarUri;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.avatarUrl = avatarUrl;
     }
 
     @Override
@@ -43,5 +52,9 @@ public class ContactChip implements ChipInterface {
     @Override
     public String getInfo() {
         return phoneNumber;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
     }
 }

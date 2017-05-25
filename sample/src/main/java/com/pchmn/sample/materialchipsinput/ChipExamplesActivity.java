@@ -24,6 +24,7 @@ public class ChipExamplesActivity extends AppCompatActivity {
     @BindView(R.id.chip5) ChipView mChip5;
     @BindView(R.id.chip6) ChipView mChip6;
     @BindView(R.id.chip7) ChipView mChip7;
+    @BindView(R.id.chip8) ChipView mChip8;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +83,9 @@ public class ChipExamplesActivity extends AppCompatActivity {
             Toast.makeText(ChipExamplesActivity.this, mChip7.getLabel() + ": delete clicked", Toast.LENGTH_SHORT).show();
         });
 
+        mChip8.setOnDeleteClicked(view -> {
+            Toast.makeText(ChipExamplesActivity.this, mChip8.getLabel() + ": delete clicked", Toast.LENGTH_SHORT).show();
+        });
 
         // programmatically
         Uri uri = null;
