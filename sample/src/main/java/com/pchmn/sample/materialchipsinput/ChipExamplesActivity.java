@@ -46,6 +46,7 @@ public class ChipExamplesActivity extends AppCompatActivity {
         });
 
         // chip 3
+        mChip3.setLabel("Updated label");
         mChip3.setOnChipClicked(view -> {
             Toast.makeText(ChipExamplesActivity.this, mChip3.getLabel() + ": clicked", Toast.LENGTH_SHORT).show();
         });
