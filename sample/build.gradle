@@ -4,10 +4,10 @@ apply plugin: 'com.jakewharton.butterknife'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "25.0.3"
     defaultConfig {
         applicationId "com.pchmn.sample.materialchipsinput"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 25
         versionCode 9
         versionName "1.0.8"
@@ -33,7 +33,7 @@ dependencies {
     compile project(path: ':library')
 
     // butter knife
-    compile 'com.android.support:appcompat-v7:25.3.0'
+    compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'io.reactivex.rxjava2:rxjava:2.0.8'
     compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.3@aar'

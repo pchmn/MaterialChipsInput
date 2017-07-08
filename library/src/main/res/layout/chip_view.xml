@@ -1,48 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/container"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@drawable/bg_chip_view">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_chip_view">
 
     <!-- content -->
     <LinearLayout
-        android:id="@+id/content"
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="32dp"
-        android:clickable="true"
-        android:background="@drawable/ripple_chip_view">
+            android:id="@+id/content"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            tools:ignore="UselessParent">
 
         <!-- avatar -->
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/icon"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:src="@drawable/avatar"
-            android:visibility="gone"/>
+                android:id="@+id/icon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/avatar"
+                android:visibility="gone"/>
 
         <!-- label -->
         <TextView
-            android:id="@+id/label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:paddingLeft="8dp"
-            android:textSize="14sp"
-            android:text="Paulcito"/>
+                android:id="@+id/label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="8dp"
+                android:paddingStart="8dp"
+                android:textSize="14sp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                tools:text="Paulcito"
+                tools:ignore="RtlSymmetry"/>
 
         <!-- remove button -->
         <ImageButton
-            android:id="@+id/delete_button"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_cancel_grey_24dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp" />
+                android:id="@+id/delete_button"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_cancel_grey_24dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                tools:ignore="ContentDescription"/>
 
     </LinearLayout>
 

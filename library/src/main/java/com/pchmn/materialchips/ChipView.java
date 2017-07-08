@@ -351,6 +351,8 @@ public class ChipView extends RelativeLayout {
      */
     public void setOnChipClicked(OnClickListener onClickListener) {
         mContentLayout.setOnClickListener(onClickListener);
+        mContentLayout.setClickable(true);
+        mContentLayout.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.ripple_chip_view));
     }
 
     /**
