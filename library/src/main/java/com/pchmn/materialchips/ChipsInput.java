@@ -132,7 +132,7 @@ public class ChipsInput extends ScrollViewMaxHeight {
         }
 
         // adapter
-        mChipsAdapter = new ChipsAdapter(mContext, this, mRecyclerView);
+        mChipsAdapter = new ChipsAdapter(mContext, this, mRecyclerView, mHintColor, mTextColor);
         ChipsLayoutManager chipsLayoutManager = ChipsLayoutManager.newBuilder(mContext)
                 .setOrientation(ChipsLayoutManager.HORIZONTAL)
                 .build();
@@ -212,13 +212,7 @@ public class ChipsInput extends ScrollViewMaxHeight {
     }
 
     public ChipsInputEditText getEditText() {
-        ChipsInputEditText editText = new ChipsInputEditText(mContext);
-        if(mHintColor != null)
-            editText.setHintTextColor(mHintColor);
-        if(mTextColor != null)
-            editText.setTextColor(mTextColor);
-
-        return editText;
+        return mChipsAdapter.getmEditText();
     }
 
     public DetailedChipView getDetailedChipView(ChipInterface chip) {

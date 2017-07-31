@@ -1,6 +1,7 @@
 package com.pchmn.materialchips.adapter;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -34,20 +35,28 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private static final String TAG = ChipsAdapter.class.toString();
     private static final int TYPE_EDIT_TEXT = 0;
     private static final int TYPE_ITEM = 1;
+    private ColorStateList mHintColor;
+    private ColorStateList mTextColor;
     private Context mContext;
     private ChipsInput mChipsInput;
     private List<ChipInterface> mChipList = new ArrayList<>();
     private String mHintLabel;
-    private ChipsInputEditText mEditText;
-    private RecyclerView mRecycler;
 
+    private ChipsInputEditText mEditText;
+
+    private RecyclerView mRecycler;
     public ChipsAdapter(Context context, ChipsInput chipsInput, RecyclerView recycler) {
         mContext = context;
         mChipsInput = chipsInput;
         mRecycler = recycler;
         mHintLabel = mChipsInput.getHint();
-        mEditText = mChipsInput.getEditText();
         initEditText();
+    }
+
+    public ChipsAdapter(Context mContext, ChipsInput chipsInput, RecyclerView mRecyclerView, ColorStateList mHintColor, ColorStateList mTextColor) {
+        this(mContext, chipsInput, mRecyclerView);
+        this.mHintColor = mHintColor;
+        this.mTextColor = mTextColor;
     }
 
     private class ItemViewHolder extends RecyclerView.ViewHolder {
@@ -58,8 +67,8 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             super(view);
             chipView = (ChipView) view;
         }
-    }
 
+    }
     private class EditTextViewHolder extends RecyclerView.ViewHolder {
 
         private final EditText editText;
@@ -68,8 +77,8 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             super(view);
             editText = (EditText) view;
         }
-    }
 
+    }
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if(viewType == TYPE_EDIT_TEXT)
@@ -121,6 +130,13 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     private void initEditText() {
+
+        mEditText = new ChipsInputEditText(mContext);
+        if(mHintColor != null)
+            mEditText.setHintTextColor(mHintColor);
+        if(mTextColor != null)
+            mEditText.setTextColor(mTextColor);
+
         mEditText.setLayoutParams(new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -387,5 +403,9 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
 
         return false;
+    }
+
+    public ChipsInputEditText getmEditText() {
+        return mEditText;
     }
 }
