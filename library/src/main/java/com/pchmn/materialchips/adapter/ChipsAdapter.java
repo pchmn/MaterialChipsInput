@@ -1,29 +1,21 @@
 package com.pchmn.materialchips.adapter;
 
-import android.content.Context;
-import android.content.res.ColorStateList;
-import android.os.Build;
-import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.InputType;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
-import android.widget.RelativeLayout;
-
 import com.pchmn.materialchips.ChipView;
 import com.pchmn.materialchips.ChipsInput;
 import com.pchmn.materialchips.model.ChipInterface;
+import com.pchmn.materialchips.util.ViewUtil;
 import com.pchmn.materialchips.views.ChipsInputEditText;
 import com.pchmn.materialchips.views.DetailedChipView;
-import com.pchmn.materialchips.model.Chip;
-import com.pchmn.materialchips.util.ViewUtil;
 import com.pchmn.materialchips.views.FilterableListView;
+
+import android.content.Context;
+import android.os.Build;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -32,11 +24,8 @@ import java.util.List;
 
 public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private static final String TAG = ChipsAdapter.class.toString();
     private static final int TYPE_EDIT_TEXT = 0;
     private static final int TYPE_ITEM = 1;
-    private ColorStateList mHintColor;
-    private ColorStateList mTextColor;
     private Context mContext;
     private ChipsInput mChipsInput;
     private List<ChipInterface> mChipList = new ArrayList<>();
@@ -45,18 +34,17 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private ChipsInputEditText mEditText;
 
     private RecyclerView mRecycler;
+
     public ChipsAdapter(Context context, ChipsInput chipsInput, RecyclerView recycler) {
         mContext = context;
         mChipsInput = chipsInput;
         mRecycler = recycler;
         mHintLabel = mChipsInput.getHint();
-        initEditText();
     }
 
-    public ChipsAdapter(Context mContext, ChipsInput chipsInput, RecyclerView mRecyclerView, ColorStateList mHintColor, ColorStateList mTextColor) {
+    public ChipsAdapter(Context mContext, ChipsInput chipsInput, ChipsInputEditText mEditText, RecyclerView mRecyclerView) {
         this(mContext, chipsInput, mRecyclerView);
-        this.mHintColor = mHintColor;
-        this.mTextColor = mTextColor;
+        this.mEditText = mEditText;
     }
 
     private class ItemViewHolder extends RecyclerView.ViewHolder {
@@ -79,27 +67,30 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
 
     }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if(viewType == TYPE_EDIT_TEXT)
+        if (viewType == TYPE_EDIT_TEXT) {
             return new EditTextViewHolder(mEditText);
-        else
+        } else {
             return new ItemViewHolder(mChipsInput.getChipView());
+        }
 
     }
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         // edit text
-        if(position == mChipList.size()) {
-            if(mChipList.size() == 0)
+        if (position == mChipList.size()) {
+            if (mChipList.size() == 0) {
                 mEditText.setHint(mHintLabel);
+            }
 
             // auto fit edit text
             autofitEditText();
         }
         // chip
-        else if(getItemCount() > 1) {
+        else if (getItemCount() > 1) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
             itemViewHolder.chipView.inflate(getItem(position));
             // handle click
@@ -118,8 +109,9 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public int getItemViewType(int position) {
-        if (position == mChipList.size())
+        if (position == mChipList.size()) {
             return TYPE_EDIT_TEXT;
+        }
 
         return TYPE_ITEM;
     }
@@ -127,59 +119,6 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public long getItemId(int position) {
         return mChipList.get(position).hashCode();
-    }
-
-    private void initEditText() {
-
-        mEditText = new ChipsInputEditText(mContext);
-        if(mHintColor != null)
-            mEditText.setHintTextColor(mHintColor);
-        if(mTextColor != null)
-            mEditText.setTextColor(mTextColor);
-
-        mEditText.setLayoutParams(new RelativeLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        mEditText.setHint(mHintLabel);
-        mEditText.setBackgroundResource(android.R.color.transparent);
-        // prevent fullscreen on landscape
-        mEditText.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
-        mEditText.setPrivateImeOptions("nm");
-        // no suggestion
-        mEditText.setInputType(InputType.TYPE_TEXT_VARIATION_FILTER | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-
-        // handle back space
-        mEditText.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                // backspace
-                if(event.getAction() == KeyEvent.ACTION_DOWN
-                        && event.getKeyCode() == KeyEvent.KEYCODE_DEL) {
-                    // remove last chip
-                    if(mChipList.size() > 0 && mEditText.getText().toString().length() == 0)
-                        removeChip(mChipList.size() - 1);
-                }
-                return false;
-            }
-        });
-
-        // text changed
-        mEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mChipsInput.onTextChanged(s);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
     }
 
     private void autofitEditText() {
@@ -226,7 +165,7 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         });
 
         // show detailed chip
-        if(mChipsInput.isShowChipDetailed()) {
+        if (mChipsInput.isShowChipDetailed()) {
             chipView.setOnChipClicked(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -264,13 +203,13 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 
         // align left window
-        if(coord[0] <= 0) {
+        if (coord[0] <= 0) {
             layoutParams.leftMargin = 0;
             layoutParams.topMargin = coord[1] - ViewUtil.dpToPx(13);
             detailedChipView.alignLeft();
         }
         // align right
-        else if(coord[0] + ViewUtil.dpToPx(300) > windowWidth + ViewUtil.dpToPx(13)) {
+        else if (coord[0] + ViewUtil.dpToPx(300) > windowWidth + ViewUtil.dpToPx(13)) {
             layoutParams.leftMargin = windowWidth - ViewUtil.dpToPx(300);
             layoutParams.topMargin = coord[1] - ViewUtil.dpToPx(13);
             detailedChipView.alignRight();
@@ -287,12 +226,32 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     public void setFilterableListView(FilterableListView filterableListView) {
-        if(mEditText != null)
+        if (mEditText != null) {
             mEditText.setFilterableListView(filterableListView);
+        }
+    }
+
+    public void addChipsProgrammatically(List<ChipInterface> chipList) {
+        if (chipList != null) {
+            if (chipList.size() > 0) {
+                int chipsBeforeAdding = getItemCount();
+                for (ChipInterface chip : chipList) {
+                    mChipList.add(chip);
+                    mChipsInput.onChipAdded(chip, getItemCount());
+                }
+
+                // hide hint
+                mEditText.setHint(null);
+                // reset text
+                mEditText.setText(null);
+
+                notifyItemRangeChanged(chipsBeforeAdding, chipList.size());
+            }
+        }
     }
 
     public void addChip(ChipInterface chip) {
-        if(!listContains(mChipList, chip)) {
+        if (!listContains(mChipList, chip)) {
             mChipList.add(chip);
             // notify listener
             mChipsInput.onChipAdded(chip, mChipList.size());
@@ -311,8 +270,9 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         // notify listener
         notifyItemRangeChanged(position, getItemCount());
         // if 0 chip
-        if (mChipList.size() == 0)
+        if (mChipList.size() == 0) {
             mEditText.setHint(mHintLabel);
+        }
         // refresh data
         notifyDataSetChanged();
     }
@@ -324,8 +284,9 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         // notify listener
         mChipsInput.onChipRemoved(chip, mChipList.size());
         // if 0 chip
-        if (mChipList.size() == 0)
+        if (mChipList.size() == 0) {
             mEditText.setHint(mHintLabel);
+        }
         // refresh data
         notifyDataSetChanged();
     }
@@ -341,8 +302,9 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             }
         }
         // if 0 chip
-        if (mChipList.size() == 0)
+        if (mChipList.size() == 0) {
             mEditText.setHint(mHintLabel);
+        }
         // refresh data
         notifyDataSetChanged();
     }
@@ -358,8 +320,9 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             }
         }
         // if 0 chip
-        if (mChipList.size() == 0)
+        if (mChipList.size() == 0) {
             mEditText.setHint(mHintLabel);
+        }
         // refresh data
         notifyDataSetChanged();
     }
@@ -375,10 +338,17 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             }
         }
         // if 0 chip
-        if (mChipList.size() == 0)
+        if (mChipList.size() == 0) {
             mEditText.setHint(mHintLabel);
+        }
         // refresh data
         notifyDataSetChanged();
+    }
+
+    public void removeLastChip() {
+        if (mChipList.size() > 0) {
+            removeChip(mChipList.get(mChipList.size() - 1));
+        }
     }
 
     public List<ChipInterface> getChipList() {
@@ -387,18 +357,20 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private boolean listContains(List<ChipInterface> contactList, ChipInterface chip) {
 
-        if(mChipsInput.getChipValidator() != null) {
-            for(ChipInterface item: contactList) {
-                if(mChipsInput.getChipValidator().areEquals(item, chip))
+        if (mChipsInput.getChipValidator() != null) {
+            for (ChipInterface item : contactList) {
+                if (mChipsInput.getChipValidator().areEquals(item, chip)) {
                     return true;
+                }
             }
-        }
-        else {
-            for(ChipInterface item: contactList) {
-                if(chip.getId() != null && chip.getId().equals(item.getId()))
+        } else {
+            for (ChipInterface item : contactList) {
+                if (chip.getId() != null && chip.getId().equals(item.getId())) {
                     return true;
-                if(chip.getLabel().equals(item.getLabel()))
+                }
+                if (chip.getLabel().equals(item.getLabel())) {
                     return true;
+                }
             }
         }
 
