@@ -69,10 +69,10 @@ public class ChipView extends RelativeLayout {
         // inflate layout
         View rootView = inflate(getContext(), R.layout.chip_view, this);
 
-        mContentLayout = findViewById(R.id.content);
-        mAvatarIconImageView = findViewById(R.id.icon);
-        mLabelTextView = findViewById(R.id.label);
-        mDeleteButton = findViewById(R.id.delete_button);
+        mContentLayout = rootView.findViewById(R.id.content);
+        mAvatarIconImageView = rootView.findViewById(R.id.icon);
+        mLabelTextView = rootView.findViewById(R.id.label);
+        mDeleteButton = rootView.findViewById(R.id.delete_button);
 
         // letter tile provider
         mLetterTileProvider = new LetterTileProvider(mContext);
