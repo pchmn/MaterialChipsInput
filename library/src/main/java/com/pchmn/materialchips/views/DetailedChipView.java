@@ -1,14 +1,11 @@
 package com.pchmn.materialchips.views;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
@@ -19,30 +16,23 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pchmn.materialchips.R;
-import com.pchmn.materialchips.R2;
-import com.pchmn.materialchips.model.Chip;
 import com.pchmn.materialchips.model.ChipInterface;
 import com.pchmn.materialchips.util.ColorUtil;
 import com.pchmn.materialchips.util.LetterTileProvider;
-import com.pchmn.materialchips.util.MyWindowCallback;
-import com.pchmn.materialchips.util.ViewUtil;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
-
 
 public class DetailedChipView extends RelativeLayout {
 
     private static final String TAG = DetailedChipView.class.toString();
     // context
     private Context mContext;
-    // xml elements
-    @BindView(R2.id.content) RelativeLayout mContentLayout;
-    @BindView(R2.id.avatar_icon) CircleImageView mAvatarIconImageView;
-    @BindView(R2.id.name) TextView mNameTextView;
-    @BindView(R2.id.info) TextView mInfoTextView;
-    @BindView(R2.id.delete_button) ImageButton mDeleteButton;
+
+    private RelativeLayout mContentLayout;
+    private CircleImageView mAvatarIconImageView;
+    private TextView mNameTextView;
+    private TextView mInfoTextView;
+    private ImageButton mDeleteButton;
     // letter tile provider
     private static LetterTileProvider mLetterTileProvider;
     // attributes
@@ -63,13 +53,19 @@ public class DetailedChipView extends RelativeLayout {
     /**
      * Inflate the view according to attributes
      *
-     * @param attrs the attributes
+     * @param attrs
+     *         the attributes
      */
     private void init(AttributeSet attrs) {
         // inflate layout
         View rootView = inflate(getContext(), R.layout.detailed_chip_view, this);
-        // butter knife
-        ButterKnife.bind(this, rootView);
+
+        mContentLayout = rootView.findViewById(R.id.content);
+        mAvatarIconImageView = rootView.findViewById(R.id.avatar_icon);
+        mNameTextView = rootView.findViewById(R.id.name);
+        mInfoTextView = rootView.findViewById(R.id.info);
+        mDeleteButton = rootView.findViewById(R.id.delete_button);
+
         // letter tile provider
         mLetterTileProvider = new LetterTileProvider(mContext);
 
@@ -131,11 +127,10 @@ public class DetailedChipView extends RelativeLayout {
     }
 
     public void setInfo(String info) {
-        if(info != null) {
+        if (info != null) {
             mInfoTextView.setVisibility(VISIBLE);
             mInfoTextView.setText(info);
-        }
-        else {
+        } else {
             mInfoTextView.setVisibility(GONE);
         }
     }
@@ -147,15 +142,18 @@ public class DetailedChipView extends RelativeLayout {
 
     public void setBackGroundcolor(ColorStateList color) {
         mBackgroundColor = color;
-        mContentLayout.getBackground().setColorFilter(color.getDefaultColor(), PorterDuff.Mode.SRC_ATOP);
+        mContentLayout.getBackground()
+                .setColorFilter(color.getDefaultColor(), PorterDuff.Mode.SRC_ATOP);
     }
 
     public int getBackgroundColor() {
-        return mBackgroundColor == null ? ContextCompat.getColor(mContext, R.color.colorAccent) : mBackgroundColor.getDefaultColor();
+        return mBackgroundColor == null ? ContextCompat.getColor(mContext, R.color.colorAccent)
+                                        : mBackgroundColor.getDefaultColor();
     }
 
     public void setDeleteIconColor(ColorStateList color) {
-        mDeleteButton.getDrawable().mutate().setColorFilter(color.getDefaultColor(), PorterDuff.Mode.SRC_ATOP);
+        mDeleteButton.getDrawable().mutate()
+                .setColorFilter(color.getDefaultColor(), PorterDuff.Mode.SRC_ATOP);
     }
 
     public void setOnDeleteClicked(OnClickListener onClickListener) {
@@ -163,13 +161,15 @@ public class DetailedChipView extends RelativeLayout {
     }
 
     public void alignLeft() {
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mContentLayout.getLayoutParams();
+        RelativeLayout.LayoutParams params =
+                (RelativeLayout.LayoutParams) mContentLayout.getLayoutParams();
         params.leftMargin = 0;
         mContentLayout.setLayoutParams(params);
     }
 
     public void alignRight() {
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mContentLayout.getLayoutParams();
+        RelativeLayout.LayoutParams params =
+                (RelativeLayout.LayoutParams) mContentLayout.getLayoutParams();
         params.rightMargin = 0;
         mContentLayout.setLayoutParams(params);
     }
@@ -239,29 +239,29 @@ public class DetailedChipView extends RelativeLayout {
     private static DetailedChipView newInstance(Builder builder) {
         DetailedChipView detailedChipView = new DetailedChipView(builder.context);
         // avatar
-        if(builder.avatarUri != null)
+        if (builder.avatarUri != null)
             detailedChipView.setAvatarIcon(builder.avatarUri);
-        else if(builder.avatarDrawable != null)
+        else if (builder.avatarDrawable != null)
             detailedChipView.setAvatarIcon(builder.avatarDrawable);
         else
             detailedChipView.setAvatarIcon(mLetterTileProvider.getLetterTile(builder.name));
 
         // background color
-        if(builder.backgroundColor != null)
+        if (builder.backgroundColor != null)
             detailedChipView.setBackGroundcolor(builder.backgroundColor);
 
         // text color
-        if(builder.textColor != null)
+        if (builder.textColor != null)
             detailedChipView.setTextColor(builder.textColor);
-        else if(ColorUtil.isColorDark(detailedChipView.getBackgroundColor()))
+        else if (ColorUtil.isColorDark(detailedChipView.getBackgroundColor()))
             detailedChipView.setTextColor(ColorStateList.valueOf(Color.WHITE));
         else
             detailedChipView.setTextColor(ColorStateList.valueOf(Color.BLACK));
 
         // delete icon color
-        if(builder.deleteIconColor != null)
+        if (builder.deleteIconColor != null)
             detailedChipView.setDeleteIconColor(builder.deleteIconColor);
-        else if(ColorUtil.isColorDark(detailedChipView.getBackgroundColor()))
+        else if (ColorUtil.isColorDark(detailedChipView.getBackgroundColor()))
             detailedChipView.setDeleteIconColor(ColorStateList.valueOf(Color.WHITE));
         else
             detailedChipView.setDeleteIconColor(ColorStateList.valueOf(Color.BLACK));

@@ -112,9 +112,9 @@ public class FilterableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         ItemViewHolder(View view) {
             super(view);
-            mAvatar = (CircleImageView) view.findViewById(R.id.avatar);
-            mLabel = (TextView) view.findViewById(R.id.label);
-            mInfo = (TextView) view.findViewById(R.id.info);
+            mAvatar = view.findViewById(R.id.avatar);
+            mLabel = view.findViewById(R.id.label);
+            mInfo = view.findViewById(R.id.info);
         }
     }
 

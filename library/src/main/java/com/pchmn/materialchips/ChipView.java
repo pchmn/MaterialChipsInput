@@ -1,6 +1,5 @@
 package com.pchmn.materialchips;
 
-
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -22,23 +21,16 @@ import com.pchmn.materialchips.util.ViewUtil;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class ChipView extends RelativeLayout {
 
     private static final String TAG = ChipView.class.toString();
     // context
     private Context mContext;
     // xml elements
-    @BindView(R2.id.content)
-    LinearLayout mContentLayout;
-    @BindView(R2.id.icon)
-    CircleImageView mAvatarIconImageView;
-    @BindView(R2.id.label)
-    TextView mLabelTextView;
-    @BindView(R2.id.delete_button)
-    ImageButton mDeleteButton;
+    private LinearLayout mContentLayout;
+    private CircleImageView mAvatarIconImageView;
+    private TextView mLabelTextView;
+    private ImageButton mDeleteButton;
     // attributes
     private static final int NONE = -1;
     private String mLabel;
@@ -70,13 +62,18 @@ public class ChipView extends RelativeLayout {
     /**
      * Inflate the view according to attributes
      *
-     * @param attrs the attributes
+     * @param attrs
+     *         the attributes
      */
     private void init(AttributeSet attrs) {
         // inflate layout
         View rootView = inflate(getContext(), R.layout.chip_view, this);
-        // butter knife
-        ButterKnife.bind(this, rootView);
+
+        mContentLayout = findViewById(R.id.content);
+        mAvatarIconImageView = findViewById(R.id.icon);
+        mLabelTextView = findViewById(R.id.label);
+        mDeleteButton = findViewById(R.id.delete_button);
+
         // letter tile provider
         mLetterTileProvider = new LetterTileProvider(mContext);
 
@@ -158,7 +155,8 @@ public class ChipView extends RelativeLayout {
     /**
      * Set label
      *
-     * @param label the label to set
+     * @param label
+     *         the label to set
      */
     public void setLabel(String label) {
         mLabel = label;
@@ -169,7 +167,8 @@ public class ChipView extends RelativeLayout {
     /**
      * Set label color
      *
-     * @param color the color to set
+     * @param color
+     *         the color to set
      */
     public void setLabelColor(ColorStateList color) {
         mLabelColor = color;
@@ -179,7 +178,8 @@ public class ChipView extends RelativeLayout {
     /**
      * Set label color
      *
-     * @param color the color to set
+     * @param color
+     *         the color to set
      */
     public void setLabelColor(@ColorInt int color) {
         mLabelColor = ColorStateList.valueOf(color);
@@ -189,7 +189,8 @@ public class ChipView extends RelativeLayout {
     /**
      * Show or hide avatar icon
      *
-     * @param hasAvatarIcon true to show, false to hide
+     * @param hasAvatarIcon
+     *         true to show, false to hide
      */
     public void setHasAvatarIcon(boolean hasAvatarIcon) {
         mHasAvatarIcon = hasAvatarIcon;
@@ -225,7 +226,8 @@ public class ChipView extends RelativeLayout {
     /**
      * Set avatar icon
      *
-     * @param avatarIcon the icon to set
+     * @param avatarIcon
+     *         the icon to set
      */
     public void setAvatarIcon(Drawable avatarIcon) {
         mAvatarIconDrawable = avatarIcon;
@@ -236,7 +238,8 @@ public class ChipView extends RelativeLayout {
     /**
      * Set avatar icon
      *
-     * @param avatarUri the uri of the icon to set
+     * @param avatarUri
+     *         the uri of the icon to set
      */
     public void setAvatarIcon(Uri avatarUri) {
         mAvatarIconUri = avatarUri;
@@ -247,7 +250,8 @@ public class ChipView extends RelativeLayout {
     /**
      * Show or hide delte button
      *
-     * @param deletable true to show, false to hide
+     * @param deletable
+     *         true to show, false to hide
      */
     public void setDeletable(boolean deletable) {
         mDeletable = deletable;
@@ -273,14 +277,16 @@ public class ChipView extends RelativeLayout {
                 mDeleteButton.setImageDrawable(mDeleteIcon);
             if (mDeleteIconColor != null)
                 mDeleteButton.getDrawable().mutate().setColorFilter(mDeleteIconColor
-                        .getDefaultColor(), PorterDuff.Mode.SRC_ATOP);
+                                                                            .getDefaultColor(),
+                                                                    PorterDuff.Mode.SRC_ATOP);
         }
     }
 
     /**
      * Set delete icon color
      *
-     * @param color the color to set
+     * @param color
+     *         the color to set
      */
     public void setDeleteIconColor(ColorStateList color) {
         mDeleteIconColor = color;
@@ -291,7 +297,8 @@ public class ChipView extends RelativeLayout {
     /**
      * Set delete icon color
      *
-     * @param color the color to set
+     * @param color
+     *         the color to set
      */
     public void setDeleteIconColor(@ColorInt int color) {
         mDeleteIconColor = ColorStateList.valueOf(color);
@@ -302,7 +309,8 @@ public class ChipView extends RelativeLayout {
     /**
      * Set delete icon
      *
-     * @param deleteIcon the icon to set
+     * @param deleteIcon
+     *         the icon to set
      */
     public void setDeleteIcon(Drawable deleteIcon) {
         mDeleteIcon = deleteIcon;
@@ -313,7 +321,8 @@ public class ChipView extends RelativeLayout {
     /**
      * Set background color
      *
-     * @param color the color to set
+     * @param color
+     *         the color to set
      */
     public void setChipBackgroundColor(ColorStateList color) {
         mBackgroundColor = color;
@@ -323,7 +332,8 @@ public class ChipView extends RelativeLayout {
     /**
      * Set background color
      *
-     * @param color the color to set
+     * @param color
+     *         the color to set
      */
     public void setChipBackgroundColor(@ColorInt int color) {
         mBackgroundColor = ColorStateList.valueOf(color);
@@ -336,7 +346,8 @@ public class ChipView extends RelativeLayout {
     /**
      * Set the chip object
      *
-     * @param chip the chip
+     * @param chip
+     *         the chip
      */
     public void setChip(ChipInterface chip) {
         mChip = chip;
@@ -345,7 +356,8 @@ public class ChipView extends RelativeLayout {
     /**
      * Set OnClickListener on the delete button
      *
-     * @param onClickListener the OnClickListener
+     * @param onClickListener
+     *         the OnClickListener
      */
     public void setOnDeleteClicked(OnClickListener onClickListener) {
         mDeleteButton.setOnClickListener(onClickListener);
@@ -354,7 +366,8 @@ public class ChipView extends RelativeLayout {
     /**
      * Set OnclickListener on the entire chip
      *
-     * @param onClickListener the OnClickListener
+     * @param onClickListener
+     *         the OnClickListener
      */
     public void setOnChipClicked(OnClickListener onClickListener) {
         mContentLayout.setOnClickListener(onClickListener);
