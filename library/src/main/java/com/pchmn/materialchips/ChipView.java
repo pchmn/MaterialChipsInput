@@ -5,7 +5,6 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -339,7 +338,15 @@ public class ChipView extends RelativeLayout {
      */
     public void setChipBackgroundColor(ColorStateList color) {
         if (color == null) return;
-        setChipBackgroundColor(color.getDefaultColor());
+        mBackgroundColor = color.getDefaultColor();
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                mContentLayout.setBackgroundTintList(color);
+            } else {
+                setChipBackgroundColor(color.getDefaultColor());
+            }
+        } catch (Exception ignored) {
+        }
     }
 
     /**
@@ -401,11 +408,7 @@ public class ChipView extends RelativeLayout {
             } catch (Exception ignored) {
             }
         } else {
-            Drawable background =
-                    ContextCompat.getDrawable(getContext(), R.drawable.ripple_chip_view);
-            background.setColorFilter(
-                    new PorterDuffColorFilter(mBackgroundColor, PorterDuff.Mode.SRC_IN));
-            mContentLayout.setBackground(background);
+            setBackgroundTintList(ColorStateList.valueOf(mBackgroundColor));
         }
     }
 
