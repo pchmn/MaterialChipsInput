@@ -3,7 +3,6 @@ package com.pchmn.materialchips;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -12,7 +11,6 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -38,17 +36,14 @@ public class ChipView extends RelativeLayout {
     // attributes
     private static final int NONE = -1;
     private String mLabel;
-    @ColorInt
-    private int mLabelColor;
+    private ColorStateList mLabelColor;
     private boolean mHasAvatarIcon = false;
     private Drawable mAvatarIconDrawable;
     private Uri mAvatarIconUri;
     private boolean mDeletable = false;
     private Drawable mDeleteIcon;
-    @ColorInt
-    private int mDeleteIconColor;
-    @ColorInt
-    private int mBackgroundColor;
+    private ColorStateList mDeleteIconColor;
+    private ColorStateList mBackgroundColor;
     // letter tile provider
     private LetterTileProvider mLetterTileProvider;
     // chip
@@ -94,7 +89,7 @@ public class ChipView extends RelativeLayout {
             try {
                 // label
                 mLabel = a.getString(R.styleable.ChipView_label);
-                mLabelColor = a.getColor(R.styleable.ChipView_labelColor, Color.WHITE);
+                mLabelColor = a.getColorStateList(R.styleable.ChipView_labelColor);
                 // avatar icon
                 mHasAvatarIcon = a.getBoolean(R.styleable.ChipView_hasAvatarIcon, false);
                 int avatarIconId = a.getResourceId(R.styleable.ChipView_avatarIcon, NONE);
@@ -103,12 +98,12 @@ public class ChipView extends RelativeLayout {
                 if (mAvatarIconDrawable != null) mHasAvatarIcon = true;
                 // delete icon
                 mDeletable = a.getBoolean(R.styleable.ChipView_deletable, false);
-                mDeleteIconColor = a.getColor(R.styleable.ChipView_deleteIconColor, Color.WHITE);
+                mDeleteIconColor = a.getColorStateList(R.styleable.ChipView_deleteIconColor);
                 int deleteIconId = a.getResourceId(R.styleable.ChipView_deleteIcon, NONE);
                 if (deleteIconId != NONE)
                     mDeleteIcon = ContextCompat.getDrawable(mContext, deleteIconId);
                 // background color
-                mBackgroundColor = a.getColor(R.styleable.ChipView_backgroundColor, Color.BLACK);
+                mBackgroundColor = a.getColorStateList(R.styleable.ChipView_backgroundColor);
             } finally {
                 a.recycle();
             }
@@ -124,7 +119,7 @@ public class ChipView extends RelativeLayout {
     private void inflateWithAttributes() {
         // label
         setLabel(mLabel);
-        if (mLabelColor != 0) setLabelColor(mLabelColor);
+        if (mLabelColor != null) setLabelColor(mLabelColor);
 
         // avatar
         setHasAvatarIcon(mHasAvatarIcon);
@@ -133,7 +128,7 @@ public class ChipView extends RelativeLayout {
         setDeletable(mDeletable);
 
         // background color
-        if (mBackgroundColor != 0)
+        if (mBackgroundColor != null)
             setChipBackgroundColor(mBackgroundColor);
     }
 
@@ -177,7 +172,8 @@ public class ChipView extends RelativeLayout {
      *         the color to set
      */
     public void setLabelColor(ColorStateList color) {
-        setLabelColor(color.getDefaultColor());
+        mLabelColor = color;
+        mLabelTextView.setTextColor(color.getDefaultColor());
     }
 
     /**
@@ -187,7 +183,7 @@ public class ChipView extends RelativeLayout {
      *         the color to set
      */
     public void setLabelColor(@ColorInt int color) {
-        mLabelColor = color;
+        mLabelColor = ColorStateList.valueOf(color);
         mLabelTextView.setTextColor(color);
     }
 
@@ -280,9 +276,10 @@ public class ChipView extends RelativeLayout {
             // set icon
             if (mDeleteIcon != null)
                 mDeleteButton.setImageDrawable(mDeleteIcon);
-            if (mDeleteIconColor != 0)
-                mDeleteButton.getDrawable().mutate().setColorFilter(mDeleteIconColor,
-                                                                    PorterDuff.Mode.SRC_ATOP);
+            if (mDeleteIconColor != null)
+                mDeleteButton.getDrawable().mutate()
+                        .setColorFilter(mDeleteIconColor.getDefaultColor(),
+                                        PorterDuff.Mode.SRC_ATOP);
         }
     }
 
@@ -293,7 +290,9 @@ public class ChipView extends RelativeLayout {
      *         the color to set
      */
     public void setDeleteIconColor(ColorStateList color) {
-        setDeleteIconColor(color.getDefaultColor());
+        mDeleteIconColor = color;
+        mDeletable = true;
+        inflateWithAttributes();
     }
 
     /**
@@ -303,7 +302,7 @@ public class ChipView extends RelativeLayout {
      *         the color to set
      */
     public void setDeleteIconColor(@ColorInt int color) {
-        mDeleteIconColor = color;
+        mDeleteIconColor = ColorStateList.valueOf(color);
         mDeletable = true;
         inflateWithAttributes();
     }
@@ -338,15 +337,8 @@ public class ChipView extends RelativeLayout {
      */
     public void setChipBackgroundColor(ColorStateList color) {
         if (color == null) return;
-        mBackgroundColor = color.getDefaultColor();
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                mContentLayout.setBackgroundTintList(color);
-            } else {
-                setChipBackgroundColor(color.getDefaultColor());
-            }
-        } catch (Exception ignored) {
-        }
+        mBackgroundColor = color;
+        setChipBackgroundColor(color.getDefaultColor());
     }
 
     /**
@@ -356,7 +348,7 @@ public class ChipView extends RelativeLayout {
      *         the color to set
      */
     public void setChipBackgroundColor(@ColorInt int color) {
-        mBackgroundColor = color;
+        mBackgroundColor = ColorStateList.valueOf(color);
         try {
             mContentLayout.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
         } catch (Exception ignored) {
@@ -365,7 +357,7 @@ public class ChipView extends RelativeLayout {
 
     @Override
     public void setBackground(Drawable background) {
-        super.setBackground(background);
+        mContentLayout.setBackground(background);
         setChipBackgroundColor(mBackgroundColor);
     }
 
@@ -404,18 +396,14 @@ public class ChipView extends RelativeLayout {
         mContentLayout.setClickable(onClickListener != null);
         if (onClickListener == null) return;
         mContentLayout.setOnClickListener(onClickListener);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            try {
-                TypedValue outValue = new TypedValue();
-                getContext().getTheme().resolveAttribute(android.R.attr.selectableItemBackground,
-                                                         outValue, true);
-                mContentLayout.setForeground(
-                        ContextCompat.getDrawable(getContext(), outValue.resourceId));
-            } catch (Exception ignored) {
-            }
-        } else {
-            mContentLayout.setBackground(
-                    ContextCompat.getDrawable(getContext(), R.drawable.ripple_chip_view));
+        setBackground(ContextCompat.getDrawable(getContext(), R.drawable.ripple_chip_view));
+    }
+
+    @Override
+    public void setElevation(float elevation) {
+        super.setElevation(elevation);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mContentLayout.setElevation(elevation);
         }
     }
 
@@ -425,17 +413,14 @@ public class ChipView extends RelativeLayout {
     public static class Builder {
         private Context context;
         private String label;
-        @ColorInt
-        private int labelColor;
+        private ColorStateList labelColor;
         private boolean hasAvatarIcon = false;
         private Uri avatarIconUri;
         private Drawable avatarIconDrawable;
         private boolean deletable = false;
         private Drawable deleteIcon;
-        @ColorInt
-        private int deleteIconColor;
-        @ColorInt
-        private int backgroundColor;
+        private ColorStateList deleteIconColor;
+        private ColorStateList backgroundColor;
         private ChipInterface chip;
 
         public Builder(Context context) {
@@ -447,7 +432,7 @@ public class ChipView extends RelativeLayout {
             return this;
         }
 
-        public Builder labelColor(@ColorInt int labelColor) {
+        public Builder labelColor(ColorStateList labelColor) {
             this.labelColor = labelColor;
             return this;
         }
@@ -477,12 +462,12 @@ public class ChipView extends RelativeLayout {
             return this;
         }
 
-        public Builder deleteIconColor(@ColorInt int deleteIconColor) {
+        public Builder deleteIconColor(ColorStateList deleteIconColor) {
             this.deleteIconColor = deleteIconColor;
             return this;
         }
 
-        public Builder backgroundColor(@ColorInt int backgroundColor) {
+        public Builder backgroundColor(ColorStateList backgroundColor) {
             this.backgroundColor = backgroundColor;
             return this;
         }
