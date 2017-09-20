@@ -358,9 +358,15 @@ public class ChipView extends RelativeLayout {
     public void setChipBackgroundColor(@ColorInt int color) {
         mBackgroundColor = color;
         try {
-            mContentLayout.setBackgroundColor(color);
+            mContentLayout.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
         } catch (Exception ignored) {
         }
+    }
+
+    @Override
+    public void setBackground(Drawable background) {
+        super.setBackground(background);
+        setChipBackgroundColor(mBackgroundColor);
     }
 
     /**
@@ -408,7 +414,8 @@ public class ChipView extends RelativeLayout {
             } catch (Exception ignored) {
             }
         } else {
-            setBackgroundTintList(ColorStateList.valueOf(mBackgroundColor));
+            mContentLayout.setBackground(
+                    ContextCompat.getDrawable(getContext(), R.drawable.ripple_chip_view));
         }
     }
 
