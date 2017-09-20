@@ -5,12 +5,15 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -373,6 +376,11 @@ public class ChipView extends RelativeLayout {
         mDeleteButton.setOnClickListener(onClickListener);
     }
 
+    @Override
+    public void setOnClickListener(@Nullable OnClickListener l) {
+        setOnChipClicked(l);
+    }
+
     /**
      * Set OnclickListener on the entire chip
      *
@@ -380,10 +388,25 @@ public class ChipView extends RelativeLayout {
      *         the OnClickListener
      */
     public void setOnChipClicked(OnClickListener onClickListener) {
+        mContentLayout.setClickable(onClickListener != null);
+        if (onClickListener == null) return;
         mContentLayout.setOnClickListener(onClickListener);
-        mContentLayout.setClickable(true);
-        mContentLayout.setBackground(ContextCompat.getDrawable(getContext(), R.drawable
-                .ripple_chip_view));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            try {
+                TypedValue outValue = new TypedValue();
+                getContext().getTheme().resolveAttribute(android.R.attr.selectableItemBackground,
+                                                         outValue, true);
+                mContentLayout.setForeground(
+                        ContextCompat.getDrawable(getContext(), outValue.resourceId));
+            } catch (Exception ignored) {
+            }
+        } else {
+            Drawable background =
+                    ContextCompat.getDrawable(getContext(), R.drawable.ripple_chip_view);
+            background.setColorFilter(
+                    new PorterDuffColorFilter(mBackgroundColor, PorterDuff.Mode.SRC_IN));
+            mContentLayout.setBackground(background);
+        }
     }
 
     /**
