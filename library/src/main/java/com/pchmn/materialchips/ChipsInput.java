@@ -5,8 +5,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.annotation.ColorInt;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -32,28 +34,36 @@ public class ChipsInput extends ScrollViewMaxHeight {
     private static final String TAG = ChipsInput.class.toString();
     // context
     private Context mContext;
-    // xml element
-    private RecyclerView mRecyclerView;
     // adapter
     private ChipsAdapter mChipsAdapter;
     // attributes
     private static final int NONE = -1;
     private String mHint;
-    private ColorStateList mHintColor;
-    private ColorStateList mTextColor;
+    @ColorInt
+    private int mHintColor;
+    @ColorInt
+    private int mTextColor;
     private int mMaxRows = 2;
-    private ColorStateList mChipLabelColor;
+    @ColorInt
+    private int mChipLabelColor;
     private boolean mChipHasAvatarIcon = true;
     private boolean mChipDeletable = false;
     private Drawable mChipDeleteIcon;
-    private ColorStateList mChipDeleteIconColor;
-    private ColorStateList mChipBackgroundColor;
+    @ColorInt
+    private int mChipDeleteIconColor;
+    @ColorInt
+    private int mChipBackgroundColor;
     private boolean mShowChipDetailed = true;
-    private ColorStateList mChipDetailedTextColor;
-    private ColorStateList mChipDetailedDeleteIconColor;
-    private ColorStateList mChipDetailedBackgroundColor;
-    private ColorStateList mFilterableListBackgroundColor;
-    private ColorStateList mFilterableListTextColor;
+    @ColorInt
+    private int mChipDetailedTextColor;
+    @ColorInt
+    private int mChipDetailedDeleteIconColor;
+    @ColorInt
+    private int mChipDetailedBackgroundColor;
+    @ColorInt
+    private int mFilterableListBackgroundColor;
+    @ColorInt
+    private int mFilterableListTextColor;
     // chips listener
     private List<ChipsListener> mChipsListenerList = new ArrayList<>();
     private ChipsListener mChipsListener;
@@ -85,7 +95,7 @@ public class ChipsInput extends ScrollViewMaxHeight {
         // inflate layout
         View rootView = inflate(getContext(), R.layout.chips_input, this);
 
-        mRecyclerView = rootView.findViewById(R.id.chips_recycler);
+        RecyclerView mRecyclerView = rootView.findViewById(R.id.chips_recycler);
 
         // attributes
         if (attrs != null) {
@@ -97,39 +107,42 @@ public class ChipsInput extends ScrollViewMaxHeight {
             try {
                 // hint
                 mHint = a.getString(R.styleable.ChipsInput_hint);
-                mHintColor = a.getColorStateList(R.styleable.ChipsInput_hintColor);
-                mTextColor = a.getColorStateList(R.styleable.ChipsInput_textColor);
+                mHintColor = a.getColor(R.styleable.ChipsInput_hintColor, Color.WHITE);
+                mTextColor = a.getColor(R.styleable.ChipsInput_textColor, Color.WHITE);
                 mMaxRows = a.getInteger(R.styleable.ChipsInput_maxRows, 2);
                 setMaxHeight(ViewUtil.dpToPx((40 * mMaxRows) + 8));
                 //setVerticalScrollBarEnabled(true);
                 // chip label color
-                mChipLabelColor = a.getColorStateList(R.styleable.ChipsInput_chip_labelColor);
+                mChipLabelColor = a.getColor(R.styleable.ChipsInput_chip_labelColor, Color.WHITE);
                 // chip avatar icon
                 mChipHasAvatarIcon = a.getBoolean(R.styleable.ChipsInput_chip_hasAvatarIcon, true);
                 // chip delete icon
                 mChipDeletable = a.getBoolean(R.styleable.ChipsInput_chip_deletable, false);
                 mChipDeleteIconColor =
-                        a.getColorStateList(R.styleable.ChipsInput_chip_deleteIconColor);
+                        a.getColor(R.styleable.ChipsInput_chip_deleteIconColor, Color.WHITE);
                 int deleteIconId = a.getResourceId(R.styleable.ChipsInput_chip_deleteIcon, NONE);
                 if (deleteIconId != NONE)
                     mChipDeleteIcon = ContextCompat.getDrawable(mContext, deleteIconId);
                 // chip background color
                 mChipBackgroundColor =
-                        a.getColorStateList(R.styleable.ChipsInput_chip_backgroundColor);
+                        a.getColor(R.styleable.ChipsInput_chip_backgroundColor, Color.BLACK);
                 // show chip detailed
                 mShowChipDetailed = a.getBoolean(R.styleable.ChipsInput_showChipDetailed, true);
                 // chip detailed text color
                 mChipDetailedTextColor =
-                        a.getColorStateList(R.styleable.ChipsInput_chip_detailed_textColor);
+                        a.getColor(R.styleable.ChipsInput_chip_detailed_textColor, Color.WHITE);
                 mChipDetailedBackgroundColor =
-                        a.getColorStateList(R.styleable.ChipsInput_chip_detailed_backgroundColor);
+                        a.getColor(R.styleable.ChipsInput_chip_detailed_backgroundColor,
+                                   Color.BLACK);
                 mChipDetailedDeleteIconColor =
-                        a.getColorStateList(R.styleable.ChipsInput_chip_detailed_deleteIconColor);
+                        a.getColor(R.styleable.ChipsInput_chip_detailed_deleteIconColor,
+                                   Color.WHITE);
                 // filterable list
                 mFilterableListBackgroundColor =
-                        a.getColorStateList(R.styleable.ChipsInput_filterable_list_backgroundColor);
+                        a.getColor(R.styleable.ChipsInput_filterable_list_backgroundColor,
+                                   Color.BLACK);
                 mFilterableListTextColor =
-                        a.getColorStateList(R.styleable.ChipsInput_filterable_list_textColor);
+                        a.getColor(R.styleable.ChipsInput_filterable_list_textColor, Color.WHITE);
             } finally {
                 a.recycle();
             }
@@ -218,11 +231,10 @@ public class ChipsInput extends ScrollViewMaxHeight {
 
     public ChipsInputEditText getEditText() {
         ChipsInputEditText editText = new ChipsInputEditText(mContext);
-        if (mHintColor != null)
+        if (mHintColor != 0)
             editText.setHintTextColor(mHintColor);
-        if (mTextColor != null)
+        if (mTextColor != 0)
             editText.setTextColor(mTextColor);
-
         return editText;
     }
 
@@ -280,10 +292,18 @@ public class ChipsInput extends ScrollViewMaxHeight {
     }
 
     public void setHintColor(ColorStateList mHintColor) {
-        this.mHintColor = mHintColor;
+        this.mHintColor = mHintColor.getDefaultColor();
     }
 
     public void setTextColor(ColorStateList mTextColor) {
+        this.mTextColor = mTextColor.getDefaultColor();
+    }
+
+    public void setHintColor(@ColorInt int mHintColor) {
+        this.mHintColor = mHintColor;
+    }
+
+    public void setTextColor(@ColorInt int mTextColor) {
         this.mTextColor = mTextColor;
     }
 
@@ -293,6 +313,10 @@ public class ChipsInput extends ScrollViewMaxHeight {
     }
 
     public void setChipLabelColor(ColorStateList mLabelColor) {
+        setChipLabelColor(mLabelColor.getDefaultColor());
+    }
+
+    public void setChipLabelColor(@ColorInt int mLabelColor) {
         this.mChipLabelColor = mLabelColor;
     }
 
@@ -313,10 +337,18 @@ public class ChipsInput extends ScrollViewMaxHeight {
     }
 
     public void setChipDeleteIconColor(ColorStateList mDeleteIconColor) {
+        setChipDeleteIconColor(mDeleteIconColor.getDefaultColor());
+    }
+
+    public void setChipDeleteIconColor(@ColorInt int mDeleteIconColor) {
         this.mChipDeleteIconColor = mDeleteIconColor;
     }
 
     public void setChipBackgroundColor(ColorStateList mBackgroundColor) {
+        setChipBackgroundColor(mBackgroundColor.getDefaultColor());
+    }
+
+    public void setChipBackgroundColor(@ColorInt int mBackgroundColor) {
         this.mChipBackgroundColor = mBackgroundColor;
     }
 
@@ -330,14 +362,26 @@ public class ChipsInput extends ScrollViewMaxHeight {
     }
 
     public void setChipDetailedTextColor(ColorStateList mChipDetailedTextColor) {
+        setChipDetailedTextColor(mChipDetailedTextColor.getDefaultColor());
+    }
+
+    public void setChipDetailedTextColor(@ColorInt int mChipDetailedTextColor) {
         this.mChipDetailedTextColor = mChipDetailedTextColor;
     }
 
     public void setChipDetailedDeleteIconColor(ColorStateList mChipDetailedDeleteIconColor) {
+        setChipDetailedDeleteIconColor(mChipDetailedDeleteIconColor.getDefaultColor());
+    }
+
+    public void setChipDetailedDeleteIconColor(@ColorInt int mChipDetailedDeleteIconColor) {
         this.mChipDetailedDeleteIconColor = mChipDetailedDeleteIconColor;
     }
 
     public void setChipDetailedBackgroundColor(ColorStateList mChipDetailedBackgroundColor) {
+        setChipDetailedBackgroundColor(mChipDetailedBackgroundColor.getDefaultColor());
+    }
+
+    public void setChipDetailedBackgroundColor(@ColorInt int mChipDetailedBackgroundColor) {
         this.mChipDetailedBackgroundColor = mChipDetailedBackgroundColor;
     }
 

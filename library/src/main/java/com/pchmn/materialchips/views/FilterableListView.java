@@ -1,11 +1,10 @@
 package com.pchmn.materialchips.views;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.content.res.Configuration;
-import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.os.Build;
+import android.support.annotation.ColorInt;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -54,7 +53,7 @@ public class FilterableListView extends RelativeLayout {
     }
 
     public void build(List<? extends ChipInterface> filterableList, ChipsInput chipsInput,
-                      ColorStateList backgroundColor, ColorStateList textColor) {
+                      @ColorInt int backgroundColor, @ColorInt int textColor) {
         mFilterableList = filterableList;
         mChipsInput = chipsInput;
 
@@ -62,9 +61,8 @@ public class FilterableListView extends RelativeLayout {
         mAdapter = new FilterableAdapter(mContext, mRecyclerView, filterableList, chipsInput,
                                          backgroundColor, textColor);
         mRecyclerView.setAdapter(mAdapter);
-        if (backgroundColor != null)
-            mRecyclerView.getBackground()
-                    .setColorFilter(backgroundColor.getDefaultColor(), PorterDuff.Mode.SRC_ATOP);
+        if (backgroundColor != 0)
+            mRecyclerView.setBackgroundColor(backgroundColor);
 
         // listen to change in the tree
         mChipsInput.getViewTreeObserver()

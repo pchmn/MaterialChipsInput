@@ -8,6 +8,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.ColorInt;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
@@ -317,6 +318,16 @@ public class ChipView extends RelativeLayout {
         inflateWithAttributes();
     }
 
+    @Override
+    public void setBackgroundTintList(@Nullable ColorStateList tint) {
+        setChipBackgroundColor(tint);
+    }
+
+    @Override
+    public void setBackgroundColor(@ColorInt int color) {
+        setChipBackgroundColor(color);
+    }
+
     /**
      * Set background color
      *
@@ -324,6 +335,7 @@ public class ChipView extends RelativeLayout {
      *         the color to set
      */
     public void setChipBackgroundColor(ColorStateList color) {
+        if (color == null) return;
         setChipBackgroundColor(color.getDefaultColor());
     }
 
