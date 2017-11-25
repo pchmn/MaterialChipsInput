@@ -132,6 +132,7 @@ public class FilterableListView extends RelativeLayout {
         int[] coord = new int[2];
         mChipsInput.getLocationInWindow(coord);
         ViewGroup.MarginLayoutParams layoutParams = (MarginLayoutParams) getLayoutParams();
+        if (layoutParams != null) {
         layoutParams.topMargin = coord[1] + mChipsInput.getHeight();
         // height of the keyboard
         layoutParams.bottomMargin = rootView.getHeight() - r.bottom;
@@ -141,6 +142,7 @@ public class FilterableListView extends RelativeLayout {
         anim.setDuration(200);
         startAnimation(anim);
         setVisibility(VISIBLE);
+        }
     }
 
     /**
