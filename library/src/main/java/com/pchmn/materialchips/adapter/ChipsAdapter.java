@@ -299,6 +299,7 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             mEditText.setHint(mHintLabel);
         // refresh data
         notifyDataSetChanged();
+        notifyItemRangeChanged(1,mChipList.size());
     }
 
     public void removeChip(int position) {
@@ -311,8 +312,8 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (mChipList.size() == 0)
             mEditText.setHint(mHintLabel);
         // refresh data
-        notifyDataSetChanged();
-        //notifyItemRangeChanged(1,mChipList.size());
+        //notifyDataSetChanged();
+        notifyItemRangeChanged(1,mChipList.size());
     }
 
     public void removeChipById(Object id) {
