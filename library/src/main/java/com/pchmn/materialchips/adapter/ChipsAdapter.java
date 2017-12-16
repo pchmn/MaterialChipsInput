@@ -119,7 +119,11 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public long getItemId(int position) {
         return mChipList.get(position).hashCode();
     }
-
+    
+    public ChipsInputEditText getChipsInputEditText() {
+        return mEditText;
+    } 
+    
     private void initEditText() {
         mEditText.setLayoutParams(new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
