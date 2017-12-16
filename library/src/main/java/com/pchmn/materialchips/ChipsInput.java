@@ -39,7 +39,7 @@ public class ChipsInput extends ScrollViewMaxHeight {
     // xml element
     @BindView(R2.id.chips_recycler) RecyclerView mRecyclerView;
     // adapter
-    private ChipsAdapter mChipsAdapter;
+    public ChipsAdapter mChipsAdapter;
     // attributes
     private static final int NONE = -1;
     private String mHint;
