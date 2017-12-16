@@ -124,6 +124,11 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         return mEditText;
     } 
     
+    public List<ChipInterface> getChipList() {
+        return mChipList;
+    } 
+    
+    
     private void initEditText() {
         mEditText.setLayoutParams(new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
