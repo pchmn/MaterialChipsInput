@@ -9,11 +9,11 @@ import com.pchmn.materialchips.model.ChipInterface;
 public class ContactChip implements ChipInterface {
 
     private String id;
-    private Uri avatarUri;
+    private String avatarUri;
     private String name;
     private String phoneNumber;
 
-    public ContactChip(String id, Uri avatarUri, String name, String phoneNumber) {
+    public ContactChip(String id, String avatarUri, String name, String phoneNumber) {
         this.id = id;
         this.avatarUri = avatarUri;
         this.name = name;
@@ -26,7 +26,7 @@ public class ContactChip implements ChipInterface {
     }
 
     @Override
-    public Uri getAvatarUri() {
+    public String getAvatarUri() {
         return avatarUri;
     }
 

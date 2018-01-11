@@ -14,6 +14,7 @@ import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.pchmn.materialchips.ChipsInput;
 import com.pchmn.materialchips.R;
 import com.pchmn.materialchips.model.ChipInterface;
@@ -132,7 +133,10 @@ public class FilterableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         // avatar
         if(mChipsInput.chipHasAvatarIcon() && chip.getAvatarUri() != null) {
             itemViewHolder.mAvatar.setVisibility(View.VISIBLE);
-            itemViewHolder.mAvatar.setImageURI(chip.getAvatarUri());
+            //itemViewHolder.mAvatar.setImageURI(chip.getAvatarUri());
+            Glide.with(mContext)
+                    .load(chip.getAvatarUri())
+                    .into(itemViewHolder.mAvatar);
         }
         else if(mChipsInput.chipHasAvatarIcon() && chip.getAvatarDrawable() != null) {
             itemViewHolder.mAvatar.setVisibility(View.VISIBLE);

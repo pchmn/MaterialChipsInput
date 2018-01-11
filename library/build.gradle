@@ -40,6 +40,9 @@ dependencies {
     // butter knife
     compile 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+
+    // glide
+    compile 'com.github.bumptech.glide:glide:4.1.1'
 }
 
 apply plugin: 'com.github.dcendents.android-maven'

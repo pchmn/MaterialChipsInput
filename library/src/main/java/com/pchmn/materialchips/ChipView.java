@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.pchmn.materialchips.model.Chip;
 import com.pchmn.materialchips.model.ChipInterface;
 import com.pchmn.materialchips.util.LetterTileProvider;
@@ -42,7 +43,7 @@ public class ChipView extends RelativeLayout {
     private ColorStateList mLabelColor;
     private boolean mHasAvatarIcon = false;
     private Drawable mAvatarIconDrawable;
-    private Uri mAvatarIconUri;
+    private String mAvatarIconUri;
     private boolean mDeletable = false;
     private Drawable mDeleteIcon;
     private ColorStateList mDeleteIconColor;
@@ -210,7 +211,10 @@ public class ChipView extends RelativeLayout {
 
             // set icon
             if(mAvatarIconUri != null)
-                mAvatarIconImageView.setImageURI(mAvatarIconUri);
+                //mAvatarIconImageView.setImageURI(mAvatarIconUri);
+                Glide.with(this)
+                        .load(mAvatarIconUri)
+                        .into(mAvatarIconImageView);
             else if(mAvatarIconDrawable != null)
                 mAvatarIconImageView.setImageDrawable(mAvatarIconDrawable);
             else
@@ -234,7 +238,7 @@ public class ChipView extends RelativeLayout {
      *
      * @param avatarUri the uri of the icon to set
      */
-    public void setAvatarIcon(Uri avatarUri) {
+    public void setAvatarIcon(String avatarUri) {
         mAvatarIconUri = avatarUri;
         mHasAvatarIcon = true;
         inflateWithAttributes();
@@ -361,7 +365,7 @@ public class ChipView extends RelativeLayout {
         private String label;
         private ColorStateList labelColor;
         private boolean hasAvatarIcon = false;
-        private Uri avatarIconUri;
+        private String avatarIconUri;
         private Drawable avatarIconDrawable;
         private boolean deletable = false;
         private Drawable deleteIcon;
@@ -388,7 +392,7 @@ public class ChipView extends RelativeLayout {
             return this;
         }
 
-        public Builder avatarIcon(Uri avatarUri) {
+        public Builder avatarIcon(String avatarUri) {
             this.avatarIconUri = avatarUri;
             return this;
         }

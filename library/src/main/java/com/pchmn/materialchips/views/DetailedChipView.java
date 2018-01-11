@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.pchmn.materialchips.R;
 import com.pchmn.materialchips.R2;
 import com.pchmn.materialchips.model.Chip;
@@ -122,8 +123,10 @@ public class DetailedChipView extends RelativeLayout {
         mAvatarIconImageView.setImageBitmap(icon);
     }
 
-    public void setAvatarIcon(Uri icon) {
-        mAvatarIconImageView.setImageURI(icon);
+    public void setAvatarIcon(String icon) {
+        Glide.with(this)
+                .load(icon)
+                .into(mAvatarIconImageView);
     }
 
     public void setName(String name) {
@@ -176,7 +179,7 @@ public class DetailedChipView extends RelativeLayout {
 
     public static class Builder {
         private Context context;
-        private Uri avatarUri;
+        private String avatarUri;
         private Drawable avatarDrawable;
         private String name;
         private String info;
@@ -188,7 +191,7 @@ public class DetailedChipView extends RelativeLayout {
             this.context = context;
         }
 
-        public Builder avatar(Uri avatarUri) {
+        public Builder avatar(String avatarUri) {
             this.avatarUri = avatarUri;
             return this;
         }
