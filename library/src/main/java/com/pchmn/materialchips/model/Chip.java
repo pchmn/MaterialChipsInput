@@ -2,7 +2,6 @@ package com.pchmn.materialchips.model;
 
 
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
