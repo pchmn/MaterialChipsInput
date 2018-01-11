@@ -138,12 +138,11 @@ public class FilterableListView extends RelativeLayout {
             // height of the keyboard
             layoutParams.bottomMargin = rootView.getHeight() - r.bottom;
             setLayoutParams(layoutParams);
-
-            AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
-            anim.setDuration(200);
-            startAnimation(anim);
-            setVisibility(VISIBLE);
         }
+        AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
+        anim.setDuration(200);
+        startAnimation(anim);
+        setVisibility(VISIBLE);
     }
 
     /**
