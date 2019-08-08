@@ -87,7 +87,7 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 mEditText.setHint(mHintLabel);
 
             // auto fit edit text
-            autofitEditText();
+            //autofitEditText();
         }
         // chip
         else if(getItemCount() > 1) {
@@ -185,9 +185,6 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 ViewGroup.LayoutParams params = mEditText.getLayoutParams();
                 params.width = right - left - ViewUtil.dpToPx(8);
                 mEditText.setLayoutParams(params);
-
-                // request focus
-                mEditText.requestFocus();
 
                 // remove the listener:
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {

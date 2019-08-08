@@ -97,8 +97,6 @@ public class DetailedChipView extends RelativeLayout {
         anim.setDuration(200);
         startAnimation(anim);
         setVisibility(VISIBLE);
-        // focus on the view
-        requestFocus();
     }
 
     /**
