@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -14,9 +13,9 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
 import android.text.TextPaint;
-import android.util.Log;
+
+import androidx.core.content.ContextCompat;
 
 import com.pchmn.materialchips.R;
 
@@ -27,28 +26,48 @@ import com.pchmn.materialchips.R;
  */
 public class LetterTileProvider {
 
-    /** The number of available tile colors (see R.array.letter_tile_colors) */
+    /**
+     * The number of available tile colors (see R.array.letter_tile_colors)
+     */
     private static final int NUM_OF_TILE_COLORS = 8;
 
-    /** The {@link TextPaint} used to draw the letter onto the tile */
+    /**
+     * The {@link TextPaint} used to draw the letter onto the tile
+     */
     private final TextPaint mPaint = new TextPaint();
-    /** The bounds that enclose the letter */
+    /**
+     * The bounds that enclose the letter
+     */
     private final Rect mBounds = new Rect();
-    /** The {@link Canvas} to draw on */
+    /**
+     * The {@link Canvas} to draw on
+     */
     private final Canvas mCanvas = new Canvas();
-    /** The first char of the name being displayed */
+    /**
+     * The first char of the name being displayed
+     */
     private final char[] mFirstChar = new char[1];
 
-    /** The background colors of the tile */
+    /**
+     * The background colors of the tile
+     */
     private final TypedArray mColors;
-    /** The font size used to display the letter */
+    /**
+     * The font size used to display the letter
+     */
     private final int mTileLetterFontSize;
-    /** The default image to display */
+    /**
+     * The default image to display
+     */
     private final Bitmap mDefaultBitmap;
 
-    /** Width */
+    /**
+     * Width
+     */
     private final int mWidth;
-    /** Height */
+    /**
+     * Height
+     */
     private final int mHeight;
 
     /**
@@ -74,14 +93,46 @@ public class LetterTileProvider {
     }
 
     /**
+     * @param c The char to check
+     * @return True if <code>c</code> is in the English alphabet or is a digit,
+     * false otherwise
+     */
+    private static boolean isLetterOrDigit(char c) {
+        //return 'A' <= c && c <= 'Z' || 'a' <= c && c <= 'z' || '0' <= c && c <= '9';
+        return Character.isLetterOrDigit(c);
+    }
+
+    public static Bitmap drawableToBitmap(Drawable drawable) {
+        Bitmap bitmap = null;
+
+        if (drawable instanceof BitmapDrawable) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+            if (bitmapDrawable.getBitmap() != null) {
+                return bitmapDrawable.getBitmap();
+            }
+        }
+
+        if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
+        } else {
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        }
+
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
+    }
+
+    /**
      * @param displayName The name used to create the letter for the tile
      * @return A {@link Bitmap} that contains a letter used in the English
-     *         alphabet or digit, if there is no letter or digit available, a
-     *         default image is shown instead
+     * alphabet or digit, if there is no letter or digit available, a
+     * default image is shown instead
      */
     public Bitmap getLetterTile(String displayName) {
         // workaround
-        if(displayName == null || displayName.length() == 0)
+        if (displayName == null || displayName.length() == 0)
             return null;
 
         final Bitmap bitmap = Bitmap.createBitmap(mWidth, mHeight, Bitmap.Config.ARGB_8888);
@@ -98,8 +149,7 @@ public class LetterTileProvider {
             mPaint.getTextBounds(mFirstChar, 0, 1, mBounds);
             c.drawText(mFirstChar, 0, 1, mWidth / 2, mHeight / 2
                     + (mBounds.bottom - mBounds.top) / 2, mPaint);
-        }
-        else {
+        } else {
             // (32 - 24) / 2 = 4
             c.drawBitmap(mDefaultBitmap, ViewUtil.dpToPx(4), ViewUtil.dpToPx(4), null);
         }
@@ -109,12 +159,12 @@ public class LetterTileProvider {
     /**
      * @param displayName The name used to create the letter for the tile
      * @return A circular {@link Bitmap} that contains a letter used in the English
-     *         alphabet or digit, if there is no letter or digit available, a
-     *         default image is shown instead
+     * alphabet or digit, if there is no letter or digit available, a
+     * default image is shown instead
      */
     public Bitmap getCircularLetterTile(String displayName) {
         // workaround
-        if(displayName == null || displayName.length() == 0)
+        if (displayName == null || displayName.length() == 0)
             displayName = ".";
 
         final Bitmap bitmap = Bitmap.createBitmap(mWidth, mHeight, Bitmap.Config.ARGB_8888);
@@ -138,19 +188,9 @@ public class LetterTileProvider {
     }
 
     /**
-     * @param c The char to check
-     * @return True if <code>c</code> is in the English alphabet or is a digit,
-     *         false otherwise
-     */
-    private static boolean isLetterOrDigit(char c) {
-        //return 'A' <= c && c <= 'Z' || 'a' <= c && c <= 'z' || '0' <= c && c <= '9';
-        return Character.isLetterOrDigit(c);
-    }
-
-    /**
      * @param key The key used to generate the tile color
      * @return A new or previously chosen color for <code>key</code> used as the
-     *         tile background color
+     * tile background color
      */
     private int pickColor(String key) {
         // String.hashCode() is not supposed to change across java versions, so
@@ -194,28 +234,6 @@ public class LetterTileProvider {
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
         canvas.drawBitmap(bitmap, rect, rect, paint);
         return output;
-    }
-
-    public static Bitmap drawableToBitmap (Drawable drawable) {
-        Bitmap bitmap = null;
-
-        if (drawable instanceof BitmapDrawable) {
-            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-            if(bitmapDrawable.getBitmap() != null) {
-                return bitmapDrawable.getBitmap();
-            }
-        }
-
-        if(drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
-            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
-        } else {
-            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        }
-
-        Canvas canvas = new Canvas(bitmap);
-        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        drawable.draw(canvas);
-        return bitmap;
     }
 
 }

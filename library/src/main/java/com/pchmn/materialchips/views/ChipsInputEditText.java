@@ -3,9 +3,8 @@ package com.pchmn.materialchips.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 
-public class ChipsInputEditText extends android.support.v7.widget.AppCompatEditText {
+public class ChipsInputEditText extends androidx.appcompat.widget.AppCompatEditText {
 
     private FilterableListView filterableListView;
 
