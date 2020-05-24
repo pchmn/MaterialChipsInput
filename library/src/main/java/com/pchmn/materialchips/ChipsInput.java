@@ -346,6 +346,9 @@ public class ChipsInput extends ScrollViewMaxHeight {
         mFilterableListView = new FilterableListView(mContext);
         mFilterableListView.build(mChipList, this, mFilterableListBackgroundColor, mFilterableListTextColor);
         mChipsAdapter.setFilterableListView(mFilterableListView);
+        Chip tag = new Chip(-99, "emrhmrc", "emrhmrc");
+        addChip(tag);
+        removeChipById(-99);
     }
 
     public ChipValidator getChipValidator() {
