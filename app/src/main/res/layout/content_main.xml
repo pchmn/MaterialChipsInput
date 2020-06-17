@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".MainActivity"
+    tools:showIn="@layout/activity_main">
+
+<!--    <com.google.android.material.chip.ChipGroup-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content">-->
+
+<!--        <com.google.android.material.chip.Chip-->
+<!--            style="@style/Widget.MaterialComponents.Chip.Entry"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="hello"/>-->
+
+
+<!--        <com.google.android.material.chip.Chip-->
+<!--            style="@style/Widget.MaterialComponents.Chip.Filter"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="hello2"/>-->
+
+<!--        <com.google.android.material.chip.Chip-->
+<!--            style="@style/Widget.MaterialComponents.Chip.Choice"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="hello3"/>-->
+
+<!--        <com.google.android.material.chip.Chip-->
+<!--            style="@style/Widget.MaterialComponents.Chip.Choice"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="hello3"/>-->
+
+<!--        <com.google.android.material.chip.Chip-->
+<!--            style="@style/Widget.MaterialComponents.Chip.Choice"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="hello3"/>-->
+
+<!--        <com.google.android.material.chip.Chip-->
+<!--            style="@style/Widget.MaterialComponents.Chip.Choice"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="hello3"/>-->
+
+<!--        <com.google.android.material.textfield.TextInputEditText-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            />-->
+
+<!--    </com.google.android.material.chip.ChipGroup>-->
+
+    <com.pchmn.materialchips.ChipsInput
+        android:id="@+id/chipsInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:hint="Test hint"
+        app:chipTextColorChecked="@color/colorPrimary"
+        app:chipStrokeColor="@color/colorAccent"
+        app:chipStrokeWidth="2dp"
+        app:chipIconVisible="true"
+        app:chipLetterTileAsIcon="true"
+        app:chipStyle="@style/Widget.MaterialComponents.Chip.Filter">
+
+    </com.pchmn.materialchips.ChipsInput>
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/recipient_group_FL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="40dp"
+        app:flexWrap="wrap"
+        app:alignItems="stretch"
+        app:alignContent="space_around"
+        app:showDivider="beginning|middle|end">
+
+        <com.google.android.material.chip.Chip
+            style="@style/Widget.MaterialComponents.Chip.Entry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipStrokeColor="@color/colorAccent"
+            app:chipStrokeWidth="2dp"
+            android:text="Chip entry"/>
+
+        <com.google.android.material.chip.Chip
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chip choice"/>
+
+        <com.google.android.material.chip.Chip
+            style="@style/Widget.MaterialComponents.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipIconVisible="true"
+            app:chipIcon="@drawable/ic_check_circle_white_24dp"
+            app:chipStartPadding="0dp"
+            android:text="Chip filter"/>
+
+        <com.google.android.material.chip.Chip
+            style="@style/Widget.MaterialComponents.Chip.Action"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipIconVisible="true"
+            app:chipIcon="@drawable/ic_check_circle_white_24dp"
+            android:text="Chip action"/>
+
+    </com.google.android.flexbox.FlexboxLayout>
+
+
+
+</LinearLayout>
