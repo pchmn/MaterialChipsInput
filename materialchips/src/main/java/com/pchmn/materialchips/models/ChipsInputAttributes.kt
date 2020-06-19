@@ -11,6 +11,7 @@ class ChipsInputAttributes {
         const val NOT_SPECIFIED = -1f
     }
 
+    var placement: Placement? = null
     var hint: String? = null
     var hintColor: ColorStateList? = null
     var textColor: ColorStateList? = null
@@ -32,4 +33,9 @@ class ChipsInputAttributes {
     var chipCheckedIcon: Drawable? = null
     var chipStrokeColor: ColorStateList? = null
     var chipStrokeWidth: Float = ZERO
+
+    enum class Placement(val value: Int) {
+        VERTICAL(0),
+        HORIZONTAL(1)
+    }
 }

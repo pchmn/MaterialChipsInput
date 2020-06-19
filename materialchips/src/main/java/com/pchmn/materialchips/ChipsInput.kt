@@ -5,47 +5,66 @@ import android.net.Uri
 import android.util.AttributeSet
 import android.view.KeyEvent
 import android.view.LayoutInflater
+import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
 import androidx.core.view.size
 import androidx.core.widget.NestedScrollView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
+import com.pchmn.materialchips.adapters.ChipsInputAdapter
 import com.pchmn.materialchips.databinding.ChipsInputBinding
 import com.pchmn.materialchips.extensions.applyAttributes
 import com.pchmn.materialchips.extensions.fillInfo
+import com.pchmn.materialchips.extensions.getEnum
 import com.pchmn.materialchips.extensions.margin
 import com.pchmn.materialchips.models.ChipData
 import com.pchmn.materialchips.models.ChipDataInterface
 import com.pchmn.materialchips.models.ChipsInputAttributes
+import com.pchmn.materialchips.utils.SafeFlexboxLayoutManager
+import com.pchmn.materialchips.utils.ViewUtils
+import java.util.ArrayList
 
 class ChipsInput @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : NestedScrollView(context, attrs, defStyleAttr) {
+) : LinearLayout(context, attrs, defStyleAttr) {
 
     // ViewBinding
     private var binding: ChipsInputBinding
-    private val mChipsListeners: MutableList<ChipsListener> = mutableListOf()
+    // Listeners
+    private val mChipsListeners: ArrayList<ChipsListener> = arrayListOf()
     lateinit var editText: AppCompatEditText
     // Attributes
     private var mAttributes: ChipsInputAttributes = ChipsInputAttributes()
     // Bind every Chip view with a ChipInterface
     private val mMapChipWithChipData = hashMapOf<Chip, ChipDataInterface?>()
+    // RecyclerView
+    var chipList: ArrayList<ChipDataInterface> = arrayListOf()
+    private lateinit var mRecyclerView: RecyclerView
+    private lateinit var mChipsInputAdapter: ChipsInputAdapter
+    private lateinit var mLayoutManager: RecyclerView.LayoutManager
+    private lateinit var mFlexboxLayoutManager: FlexboxLayoutManager
 
     init {
         LayoutInflater.from(context).inflate(R.layout.chips_input, this)
         binding = ChipsInputBinding.bind(this)
-        applyAttributes(attrs)
+        getAttributes(attrs)
+        initRecyclerView()
         initEditText()
     }
 
-    private fun applyAttributes(attrs: AttributeSet?) {
+    private fun getAttributes(attrs: AttributeSet?) {
         context.theme.obtainStyledAttributes(
             attrs,
             R.styleable.ChipsInput,
             0, 0).apply {
 
             try {
+                mAttributes.placement = getEnum(R.styleable.ChipsInput_placement, ChipsInputAttributes.Placement.VERTICAL)
                 mAttributes.hint = getString(R.styleable.ChipsInput_hint)
                 mAttributes.hintColor = getColorStateList(R.styleable.ChipsInput_hintColor)
                 mAttributes.textColor = getColorStateList(R.styleable.ChipsInput_textColor)
@@ -84,106 +103,91 @@ class ChipsInput @JvmOverloads constructor(
         return styleRes == R.style.Widget_MaterialComponents_Chip_Entry
     }
 
+    private fun initRecyclerView() {
+        mLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        mFlexboxLayoutManager = SafeFlexboxLayoutManager(context)
+        mFlexboxLayoutManager.flexDirection = FlexDirection.ROW
+        mChipsInputAdapter = ChipsInputAdapter(context, chipList, mAttributes)
+
+        mChipsInputAdapter.chipsInputAdapterListener = object: ChipsInputAdapter.ChipsInputAdapterListener {
+            override fun chipOnRemoveClick(chip: Chip, chipData: ChipDataInterface, position: Int) {
+                chipList.remove(chipData)
+                mChipsInputAdapter.notifyItemRemoved(position)
+                mChipsListeners.forEach { listener -> listener.onChipRemoved(chip, chipData, position) }
+            }
+
+            override fun chipOnClick(chip: Chip, chipData: ChipDataInterface, position: Int) {
+                mChipsListeners.forEach { listener -> listener.onClick(chip, chipData, position) }
+            }
+
+            override fun chipOnCheckedChange(chip: Chip, chipData: ChipDataInterface, position: Int, isChecked: Boolean) {
+                // Notify listeners
+                mChipsListeners.forEach { listener -> listener.onCheckedChanged(chip, chipData, position, isChecked) }
+            }
+        }
+
+        mRecyclerView = binding.recyclerView.apply {
+            layoutManager = if (mAttributes.placement == ChipsInputAttributes.Placement.VERTICAL) mFlexboxLayoutManager else mLayoutManager
+            adapter = mChipsInputAdapter
+            addItemDecoration(ChipsInputAdapter.MarginItemDecoration(ViewUtils.dpToPx(10).toInt()))
+        }
+    }
+
     private fun initEditText() {
-        editText = binding.editText
-        editText.applyAttributes(mAttributes)
+        editText = mChipsInputAdapter.editText
 
         editText.setOnKeyListener { _, keyCode, event ->
-            if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_DEL && binding.flexboxLayout.size > 1 && editText.text.toString().isEmpty()) {
-                binding.flexboxLayout.removeViewAt(binding.flexboxLayout.size - 2)
+            if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_DEL && chipList.size > 0 && editText.text.toString().isEmpty()) {
+                // Remove last chip
+                removeChip(chipList.size - 1)
             }
             false
         }
     }
 
     fun addChip(chipData: ChipDataInterface) {
-        val chip = attachChipView(chipData)
-
-        chip.fillInfo(chipData, mAttributes)
+        chipList.add(chipData)
+        mChipsInputAdapter.notifyItemInserted(chipList.size - 1)
     }
 
     fun addChip(id: Any?, iconDrawable: Drawable?, text: String, info: String?) {
         val chipData = ChipData(id = id, iconDrawable = iconDrawable, text = text, info = info)
-        val chip = attachChipView(chipData)
-        chip.fillInfo(chipData, mAttributes)
+        addChip(chipData)
     }
 
     fun addChip(id: Any?, iconUri: Uri?, text: String, info: String?) {
         val chipData = ChipData(id = id, iconUri = iconUri, text = text, info = info)
-        val chip = attachChipView(chipData)
-        chip.fillInfo(chipData, mAttributes)
+        addChip(chipData)
     }
 
     fun addChip(iconDrawable: Drawable?, text: String, info: String?) {
         val chipData = ChipData(iconDrawable = iconDrawable, text = text, info = info)
-        val chip = attachChipView(chipData)
-        chip.fillInfo(chipData, mAttributes)
+        addChip(chipData)
     }
 
     fun addChip(iconUri: Uri?, text: String, info: String?) {
         val chipData = ChipData(iconUri = iconUri, text = text, info = info)
-        val chip = attachChipView(chipData)
-        chip.fillInfo(chipData, mAttributes)
+        addChip(chipData)
     }
 
     fun addChip(text: String, info: String?) {
         val chipData = ChipData(text = text, info = info)
-        val chip = attachChipView(chipData)
-        chip.fillInfo(chipData, mAttributes)
+        addChip(chipData)
     }
 
     fun addChip(text: String) {
         val chipData = ChipData(text = text)
-        val chip = attachChipView(chipData)
-        chip.fillInfo(chipData, mAttributes)
+        addChip(chipData)
     }
 
-    private fun attachChipView(chipData: ChipDataInterface?): Chip {
-        val chip = Chip(context)
-        // Add link between chip view and chip data
-        mMapChipWithChipData[chip] = chipData
+    fun removeChip(position: Int) {
+        chipList.removeAt(position)
+        mChipsInputAdapter.notifyItemRemoved(position)
+    }
 
-        // Create chip according to style choose
-        val drawable = ChipDrawable.createFromAttributes(context, null, 0, mAttributes.chipStyle)
-        chip.setChipDrawable(drawable)
-        // Apply own attributes
-        chip.applyAttributes(mAttributes)
-
-        binding.flexboxLayout.addView(chip, binding.flexboxLayout.childCount - 1)
-        // Notify listeners
-        mChipsListeners.forEach { listener -> listener.onChipAdded(chip, mMapChipWithChipData[chip], binding.flexboxLayout.size - 1) }
-        // Set margin after the view is added
-        chip.margin(right = 10F)
-
-        // Stock original colors to put them back when unchecked
-        val originalBackgroundColor = chip.chipBackgroundColor
-        val originalTextColor = chip.textColors
-        chip.setOnCheckedChangeListener { _, isChecked ->
-            // Notify listeners
-            mChipsListeners.forEach { listener -> listener.onCheckedChanged(chip, mMapChipWithChipData[chip], binding.flexboxLayout.indexOfChild(chip), isChecked) }
-            if (isChecked) {
-                if (mAttributes.chipBackgroundColorChecked != null) chip.chipBackgroundColor = mAttributes.chipBackgroundColorChecked
-                if (mAttributes.chipTextColorChecked != null) chip.setTextColor(mAttributes.chipTextColorChecked)
-            } else {
-                chip.chipBackgroundColor = originalBackgroundColor
-                chip.setTextColor(originalTextColor)
-            }
-        }
-
-        chip.setOnClickListener {
-            // Notify listeners
-            mChipsListeners.forEach { listener -> listener.onClick(chip, mMapChipWithChipData[chip], binding.flexboxLayout.indexOfChild(chip)) }
-        }
-
-        chip.setOnCloseIconClickListener {
-            binding.flexboxLayout.removeView(chip)
-            // Notify listeners
-            mChipsListeners.forEach { listener -> listener.onChipRemoved(chip, mMapChipWithChipData[chip], binding.flexboxLayout.size - 1) }
-            // Remove link between chip view and chip data
-            mMapChipWithChipData.remove(chip)
-        }
-
-        return chip
+    fun removeChip(chipData: ChipDataInterface) {
+        val position = chipList.indexOf(chipData)
+        removeChip(position)
     }
 
     fun addChipsListener(chipsListener: ChipsListener) {
@@ -191,10 +195,10 @@ class ChipsInput @JvmOverloads constructor(
     }
 
     interface ChipsListener {
-        fun onCheckedChanged(view: Chip, chipData: ChipDataInterface?, position: Int, isChecked: Boolean)
-        fun onClick(view: Chip, chipData: ChipDataInterface?, position: Int)
-        fun onChipAdded(view: Chip, chipData: ChipDataInterface?, newSize: Int)
-        fun onChipRemoved(view: Chip, chipData: ChipDataInterface?, newSize: Int)
+        fun onCheckedChanged(view: Chip?, chipData: ChipDataInterface?, position: Int, isChecked: Boolean)
+        fun onClick(view: Chip?, chipData: ChipDataInterface?, position: Int)
+        fun onChipAdded(view: Chip?, chipData: ChipDataInterface?, newSize: Int)
+        fun onChipRemoved(view: Chip?, chipData: ChipDataInterface?, newSize: Int)
     }
 }
 

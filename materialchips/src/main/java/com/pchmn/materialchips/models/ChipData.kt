@@ -2,6 +2,7 @@ package com.pchmn.materialchips.models
 
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import java.util.*
 
 class ChipData : ChipDataInterface {
 
@@ -18,7 +19,7 @@ class ChipData : ChipDataInterface {
         text: String? = null,
         info: String? = null
     ) {
-        this.id = id
+        this. id = id ?: UUID.randomUUID().toString()
         this.iconUri = iconUri
         this.iconDrawable = iconDrawable
         this.text = text

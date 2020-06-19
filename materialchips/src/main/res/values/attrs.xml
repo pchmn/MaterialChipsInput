@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="ChipsInput">
+        <attr name="placement" format="enum">
+            <enum name="vertical" value="0"/>
+            <enum name="horizontal" value="1"/>
+        </attr>
         <attr name="hint" format="string" />
         <attr name="hintColor" format="color" />
         <attr name="textColor" format="color" />

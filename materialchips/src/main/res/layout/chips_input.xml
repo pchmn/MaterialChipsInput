@@ -1,31 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.flexbox.FlexboxLayout
-        android:id="@+id/flexboxLayout"
-        android:layout_width="match_parent"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_gravity="center_vertical"
-        app:flexWrap="wrap"
-        app:alignItems="stretch"
-        app:alignContent="space_around"
-        app:showDivider="beginning|middle|end">
+        android:layout_margin="10dp" />
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/editText"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:background="@android:color/transparent"
-            android:imeOptions="flagNoExtractUi"
-            android:privateImeOptions="nm"
-            android:inputType="text"
-            app:layout_flexGrow="1" />
+<!--    <com.google.android.flexbox.FlexboxLayout-->
+<!--        android:id="@+id/flexboxLayout"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="8dp"-->
+<!--        android:layout_gravity="center_vertical"-->
+<!--        app:flexDirection="row"-->
+<!--        app:flexWrap="wrap"-->
+<!--        app:showDivider="beginning|middle|end">-->
 
-    </com.google.android.flexbox.FlexboxLayout>
+<!--        <androidx.appcompat.widget.AppCompatEditText-->
+<!--            android:id="@+id/editText"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="48dp"-->
+<!--            android:background="@android:color/transparent"-->
+<!--            android:imeOptions="flagNoExtractUi"-->
+<!--            android:privateImeOptions="nm"-->
+<!--            android:inputType="text"-->
+<!--            app:layout_flexGrow="1" />-->
 
-</androidx.core.widget.NestedScrollView>
+<!--    </com.google.android.flexbox.FlexboxLayout>-->
+
+</LinearLayout>
