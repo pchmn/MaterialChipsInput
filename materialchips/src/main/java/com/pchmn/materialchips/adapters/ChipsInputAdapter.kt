@@ -55,7 +55,6 @@ class ChipsInputAdapter(private val mContext: Context, private val mChipList: Ar
             return EditTextViewHolder(editText)
         }
         val chip = Chip(parent.context)
-        chip
         // Create chip according to style choose
         val drawable = ChipDrawable.createFromAttributes(mContext, null, 0, mAttributes.chipStyle)
         chip.setChipDrawable(drawable)
@@ -98,7 +97,6 @@ class ChipsInputAdapter(private val mContext: Context, private val mChipList: Ar
             it.getLocationInWindow(coord)
 
             val expandedChip = ExpandedChip(mContext)
-            expandedChip.id = position
             setExpandedChipViewPosition(expandedChip, coord, chip.rootView as ViewGroup, chip)
 
             // Notify listener
@@ -154,7 +152,6 @@ class ChipsInputAdapter(private val mContext: Context, private val mChipList: Ar
             layoutParams.topMargin = coord[1] - ViewUtils.dpToPx(5).toInt()
         }
 
-        rootViewGroup.id = R.id.layout2
         rootViewGroup.addView(expandedChip, layoutParams)
         expandedChip.fadeIn(coord)
     }
