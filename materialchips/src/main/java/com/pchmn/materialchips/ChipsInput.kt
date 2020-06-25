@@ -1,11 +1,14 @@
 package com.pchmn.materialchips
+import android.app.Activity
 import android.content.Context
+import android.content.ContextWrapper
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Handler
 import android.util.AttributeSet
 import android.view.KeyEvent
 import android.view.LayoutInflater
-import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,12 +24,13 @@ import com.pchmn.materialchips.models.ChipDataInterface
 import com.pchmn.materialchips.models.ChipsInputAttributes
 import com.pchmn.materialchips.utils.SafeFlexboxLayoutManager
 import com.pchmn.materialchips.utils.ViewUtils
+import com.pchmn.materialchips.utils.WindowCallback
 import jp.wasabeef.recyclerview.animators.ScaleInAnimator
-import java.util.ArrayList
+import java.util.*
 
 class ChipsInput @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : LinearLayout(context, attrs, defStyleAttr) {
+) : RelativeLayout(context, attrs, defStyleAttr) {
 
     // ViewBinding
     private var binding: ChipsInputBinding
@@ -50,8 +54,8 @@ class ChipsInput @JvmOverloads constructor(
         loadAttributes(attrs)
         initRecyclerView()
         initEditText()
+        configureWindowCallback()
     }
-
 
     /**
      * Load attributes passes by xml
@@ -156,6 +160,23 @@ class ChipsInput @JvmOverloads constructor(
                 mChipsListeners.forEach { listener -> listener.onChipCheckedChanged(chip, chipData, position, isChecked) }
             }
         }
+    }
+
+    fun configureWindowCallback() {
+        val activity = getActivityFromContext(context)
+        val callback = activity.window.callback
+        activity.window.callback = WindowCallback(callback, activity)
+    }
+
+    private fun getActivityFromContext(context: Context): Activity {
+        return when (context) {
+            is Activity -> context
+            is ContextWrapper -> getActivityFromContext(
+                context.baseContext
+            )
+            else -> throw ClassCastException("android.view.Context cannot be cast to android.app.Activity")
+        }
+
     }
 
     /**
