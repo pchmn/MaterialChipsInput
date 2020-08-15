@@ -1,5 +1,3 @@
-## [NOT CURRENTLY MAINTAINED]
-
 # MaterialChipsInput
 
 Implementation of Material Design [Chips](https://material.io/guidelines/components/chips.html) component for Android. The library provides two views : [`ChipsInput`](#chipsinput) and [`ChipView`](#chipview).
