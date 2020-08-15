@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#050510"
     tools:context="com.pchmn.sample.materialchipsinput.MainActivity">
 
     <LinearLayout
@@ -81,7 +82,7 @@
                 android:layout_marginRight="16dp"
                 app:label="Chip 5"
                 app:labelColor="@color/colorPrimary"
-                app:backgroundColor="@android:color/holo_blue_light"
+                app:backgroundColor="#202040"
                 app:deletable="true"
                 app:deleteIconColor="@color/colorPrimary"/>
 
@@ -92,8 +93,7 @@
                 android:layout_marginTop="16dp"
                 app:label="Chip 6"
                 app:labelColor="@android:color/white"
-                app:avatarIcon="@drawable/avatar"
-                app:backgroundColor="@android:color/holo_blue_light"
+                app:backgroundColor="@android:color/holo_blue_dark"
                 app:deletable="true"
                 app:deleteIconColor="@android:color/white" />
 
