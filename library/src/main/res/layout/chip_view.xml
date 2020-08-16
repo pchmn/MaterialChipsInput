@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/container"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@drawable/bg_chip_view">
+    android:layout_height="wrap_content">
 
     <!-- content -->
     <LinearLayout
