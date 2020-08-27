@@ -1,17 +1,13 @@
-## [CURRENT SITUATION OF THE LIBRARY]
-
-First version of the library is not maintained. A new version entirely rewritten in kotlin is in developement.
-
 # MaterialChipsInput
 
 Implementation of Material Design [Chips](https://material.io/guidelines/components/chips.html) component for Android. The library provides two views : [`ChipsInput`](#chipsinput) and [`ChipView`](#chipview).
 
-[![Release](https://jitpack.io/v/pchmn/MaterialChipsInput.svg)](https://jitpack.io/#pchmn/MaterialChipsInput)
+[![Release](https://jitpack.io/v/pchmn/MaterialChipsInput.svg)](https://jitpack.io/#techwizard1/MaterialChipsInput)
 
-<img src="https://github.com/pchmn/MaterialChipsInput/blob/master/docs/demo2.gif" alt="Demo" height="600px"/>
+<img src="https://github.com/techwizard1/MaterialChipsInput/blob/master/docs/demo2.gif" alt="Demo" height="600px"/>
 
 ## Demo
-[Download sample-v1.0.8.apk](https://github.com/pchmn/MaterialChipsInput/raw/master/docs/material-chips-input-sample-v1.0.8.apk)
+[Download sample-v1.0.8.apk](https://github.com/techwizard1/MaterialChipsInput/raw/master/docs/material-chips-input-sample-v1.0.9.apk)
 
 ## Setup
 
@@ -30,7 +26,7 @@ allprojects {
 In your app level build.gradle :
 ```java
 dependencies {
-    compile 'com.github.pchmn:MaterialChipsInput:1.0.8'
+    compile 'com.github.techwizard1:MaterialChipsInput:1.0.9'
 }      
 ```
 <br><br>
