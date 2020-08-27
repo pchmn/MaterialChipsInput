@@ -1,4 +1,7 @@
 # MaterialChipsInput
+This library is forked from [pchmn/MaterialChipsInput](https://github.com/pchmn/MaterialChipsInput) 
+The differenc is removed redundant white background from chip_view so it is not seen bad on darker backgrounds with dark colors.. (there were white pixels on the sides of chips)
+
 
 Implementation of Material Design [Chips](https://material.io/guidelines/components/chips.html) component for Android. The library provides two views : [`ChipsInput`](#chipsinput) and [`ChipView`](#chipview).
 
