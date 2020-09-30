@@ -265,6 +265,10 @@ public class ChipsInput extends ScrollViewMaxHeight {
     public List<? extends ChipInterface> getSelectedChipList() {
         return mChipsAdapter.getChipList();
     }
+    
+    public ChipsAdapter getAdaptor() {
+        return mChipsAdapter;
+    }
 
     public String getHint() {
         return mHint;
