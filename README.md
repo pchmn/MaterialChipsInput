@@ -1,6 +1,6 @@
 ## [CURRENT SITUATION OF THE LIBRARY]
 
-First version of the library is not maintained. A new version entirely rewritten in kotlin is in developement.
+First version of the library is not maintained. A new version entirely rewritten in kotlin is currently paused.
 
 # MaterialChipsInput
 
