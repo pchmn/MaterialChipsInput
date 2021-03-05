@@ -1,3 +1,7 @@
+## [CURRENT SITUATION OF THE LIBRARY]
+
+First version of the library is not maintained. A new version entirely rewritten in kotlin is currently paused.
+
 # MaterialChipsInput
 
 Implementation of Material Design [Chips](https://material.io/guidelines/components/chips.html) component for Android. The library provides two views : [`ChipsInput`](#chipsinput) and [`ChipView`](#chipview).
