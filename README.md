@@ -29,7 +29,7 @@ allprojects {
 In your app level build.gradle :
 ```java
 dependencies {
-    compile 'com.github.techwizard1:MaterialChipsInput:1.0.9'
+    compile 'com.github.n-droidev:MaterialChipsInput:1.0.9'
 }      
 ```
 <br><br>
