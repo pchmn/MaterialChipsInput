@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">MaterialChipsInput</string>
 
     <!-- LetterTileProvider -->
     <!-- All of the possible tile background colors -->
