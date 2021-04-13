@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.AlphaAnimation;
 import android.widget.Filter;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.pchmn.materialchips.ChipsInput;
@@ -31,6 +32,7 @@ import butterknife.ButterKnife;
 public class FilterableListView extends RelativeLayout {
 
     private static final String TAG = FilterableListView.class.toString();
+    private FrameLayout frameLayout;
     private Context mContext;
     // list
     @BindView(R2.id.recycler_view) RecyclerView mRecyclerView;
@@ -38,10 +40,16 @@ public class FilterableListView extends RelativeLayout {
     private List<? extends ChipInterface> mFilterableList;
     // others
     private ChipsInput mChipsInput;
+    private ViewGroup rootView;
 
     public FilterableListView(Context context) {
+        this(context, null);
+    }
+
+    public FilterableListView(Context context, ViewGroup layout) {
         super(context);
-        mContext = context;
+        this.mContext = context;
+        this.rootView = layout;
         init();
     }
 
@@ -75,23 +83,25 @@ public class FilterableListView extends RelativeLayout {
             public void onGlobalLayout() {
 
                 // position
-                ViewGroup rootView = (ViewGroup) mChipsInput.getRootView();
+                if(rootView == null){
+                    rootView = (ViewGroup) mChipsInput.getRootView();
+                }
 
                 // size
                 RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                         ViewUtil.getWindowWidth(mContext),
-                        ViewGroup.LayoutParams.MATCH_PARENT);
+                        ViewGroup.LayoutParams.WRAP_CONTENT);
 
                 layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
                 layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 
-                if(mContext.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+                if (mContext.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                     layoutParams.bottomMargin = ViewUtil.getNavBarHeight(mContext);
                 }
 
-
                 // add view
                 rootView.addView(FilterableListView.this, layoutParams);
+
 
                 // remove the listener:
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
@@ -123,20 +133,7 @@ public class FilterableListView extends RelativeLayout {
     public void fadeIn() {
         if(getVisibility() == VISIBLE)
             return;
-
-        // get visible window (keyboard shown)
-        final View rootView = getRootView();
-        Rect r = new Rect();
-        rootView.getWindowVisibleDisplayFrame(r);
-
-        int[] coord = new int[2];
-        mChipsInput.getLocationInWindow(coord);
-        ViewGroup.MarginLayoutParams layoutParams = (MarginLayoutParams) getLayoutParams();
-        layoutParams.topMargin = coord[1] + mChipsInput.getHeight();
-        // height of the keyboard
-        layoutParams.bottomMargin = rootView.getHeight() - r.bottom;
-        setLayoutParams(layoutParams);
-
+        
         AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
         anim.setDuration(200);
         startAnimation(anim);
