@@ -2,14 +2,14 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.jakewharton.butterknife'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 27
+    buildToolsVersion "26.0.2"
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 25
-        versionCode 9
-        versionName "1.0.8"
+        targetSdkVersion 27
+        versionCode 10
+        versionName "1.1.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -27,11 +27,11 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.3.0'
+    compile 'com.android.support:appcompat-v7:27.0.2'
     testCompile 'junit:junit:4.12'
 
     // recycler
-    compile 'com.android.support:recyclerview-v7:25.3.0'
+    compile 'com.android.support:recyclerview-v7:27.0.2'
     compile 'com.beloo.widget:ChipsLayoutManager:0.3.7@aar'
 
     // circle image view
@@ -40,6 +40,9 @@ dependencies {
     // butter knife
     compile 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+
+    // glide
+    compile 'com.github.bumptech.glide:glide:4.1.1'
 }
 
 apply plugin: 'com.github.dcendents.android-maven'

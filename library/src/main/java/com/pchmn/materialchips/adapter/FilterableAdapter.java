@@ -5,28 +5,25 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.pchmn.materialchips.ChipsInput;
 import com.pchmn.materialchips.R;
 import com.pchmn.materialchips.model.ChipInterface;
 import com.pchmn.materialchips.util.ColorUtil;
 import com.pchmn.materialchips.util.LetterTileProvider;
-import com.pchmn.materialchips.util.ViewUtil;
 
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
@@ -73,8 +70,8 @@ public class FilterableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         };
         // remove chips that do not have label
         Iterator<? extends ChipInterface> iterator = chipList.iterator();
-        while(iterator.hasNext()) {
-            if(iterator.next().getLabel() == null)
+        while (iterator.hasNext()) {
+            if (iterator.next().getLabel() == null)
                 iterator.remove();
         }
         sortList(chipList);
@@ -130,19 +127,19 @@ public class FilterableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         final ChipInterface chip = getItem(position);
 
         // avatar
-        if(mChipsInput.chipHasAvatarIcon() && chip.getAvatarUri() != null) {
+        if (mChipsInput.chipHasAvatarIcon() && chip.getAvatarUri() != null) {
             itemViewHolder.mAvatar.setVisibility(View.VISIBLE);
-            itemViewHolder.mAvatar.setImageURI(chip.getAvatarUri());
-        }
-        else if(mChipsInput.chipHasAvatarIcon() && chip.getAvatarDrawable() != null) {
+            //itemViewHolder.mAvatar.setImageURI(chip.getAvatarUri());
+            Glide.with(mContext)
+                    .load(chip.getAvatarUri())
+                    .into(itemViewHolder.mAvatar);
+        } else if (mChipsInput.chipHasAvatarIcon() && chip.getAvatarDrawable() != null) {
             itemViewHolder.mAvatar.setVisibility(View.VISIBLE);
             itemViewHolder.mAvatar.setImageDrawable(chip.getAvatarDrawable());
-        }
-        else if(mChipsInput.chipHasAvatarIcon()) {
+        } else if (mChipsInput.chipHasAvatarIcon()) {
             itemViewHolder.mAvatar.setVisibility(View.VISIBLE);
             itemViewHolder.mAvatar.setImageBitmap(mLetterTileProvider.getLetterTile(chip.getLabel()));
-        }
-        else {
+        } else {
             itemViewHolder.mAvatar.setVisibility(GONE);
         }
 
@@ -150,18 +147,17 @@ public class FilterableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         itemViewHolder.mLabel.setText(chip.getLabel());
 
         // info
-        if(chip.getInfo() != null) {
+        if (chip.getInfo() != null) {
             itemViewHolder.mInfo.setVisibility(View.VISIBLE);
             itemViewHolder.mInfo.setText(chip.getInfo());
-        }
-        else {
+        } else {
             itemViewHolder.mInfo.setVisibility(GONE);
         }
 
         // colors
-        if(mBackgroundColor != null)
+        if (mBackgroundColor != null)
             itemViewHolder.itemView.getBackground().setColorFilter(mBackgroundColor.getDefaultColor(), PorterDuff.Mode.SRC_ATOP);
-        if(mTextColor != null) {
+        if (mTextColor != null) {
             itemViewHolder.mLabel.setTextColor(mTextColor);
             itemViewHolder.mInfo.setTextColor(ColorUtil.alpha(mTextColor.getDefaultColor(), 150));
         }
@@ -170,7 +166,7 @@ public class FilterableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         itemViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mChipsInput != null)
+                if (mChipsInput != null)
                     mChipsInput.addChip(chip);
             }
         });
@@ -187,7 +183,7 @@ public class FilterableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public Filter getFilter() {
-        if(mFilter == null)
+        if (mFilter == null)
             mFilter = new ChipFilter(this, mChipList);
         return mFilter;
     }
@@ -216,8 +212,7 @@ public class FilterableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 for (ChipInterface chip : originalList) {
                     if (chip.getLabel().toLowerCase().contains(filterPattern)) {
                         filteredList.add(chip);
-                    }
-                    else if(chip.getInfo() != null && chip.getInfo().toLowerCase().replaceAll("\\s", "").contains(filterPattern)) {
+                    } else if (chip.getInfo() != null && chip.getInfo().toLowerCase().replaceAll("\\s", "").contains(filterPattern)) {
                         filteredList.add(chip);
                     }
                 }
@@ -242,14 +237,14 @@ public class FilterableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             mFilteredList.remove(position);
 
         position = mChipList.indexOf(chip);
-        if(position >= 0)
+        if (position >= 0)
             mChipList.remove(position);
 
         notifyDataSetChanged();
     }
 
     private void addChip(ChipInterface chip) {
-        if(contains(chip)) {
+        if (contains(chip)) {
             mChipList.add(chip);
             mFilteredList.add(chip);
             // sort original list
@@ -262,8 +257,8 @@ public class FilterableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     private boolean contains(ChipInterface chip) {
-        for(ChipInterface item: mOriginalList) {
-            if(item.equals(chip))
+        for (ChipInterface item : mOriginalList) {
+            if (item.equals(chip))
                 return true;
         }
         return false;

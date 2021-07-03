@@ -115,8 +115,7 @@ public class ContactListActivity extends AppCompatActivity {
                     pCur.close();
 
                 }
-
-                ContactChip contactChip = new ContactChip(id, avatarUri, name, phoneNumber);
+                ContactChip contactChip = new ContactChip(id, avatarUri == null ? null : avatarUri.toString(), name, phoneNumber);
                 // add contact to the list
                 mContactList.add(contactChip);
             }

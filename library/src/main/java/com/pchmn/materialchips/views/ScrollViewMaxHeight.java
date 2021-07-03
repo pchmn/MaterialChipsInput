@@ -28,8 +28,7 @@ public class ScrollViewMaxHeight extends NestedScrollView {
 
         try {
             mMaxHeight = a.getDimensionPixelSize(R.styleable.ScrollViewMaxHeight_maxHeight, ViewUtil.dpToPx(300));
-        }
-        finally {
+        } finally {
             a.recycle();
         }
     }

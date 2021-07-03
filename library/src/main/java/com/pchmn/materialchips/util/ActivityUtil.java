@@ -11,9 +11,9 @@ public class ActivityUtil {
         if (context == null)
             return null;
         else if (context instanceof Activity)
-            return (Activity)context;
+            return (Activity) context;
         else if (context instanceof ContextWrapper)
-            return scanForActivity(((ContextWrapper)context).getBaseContext());
+            return scanForActivity(((ContextWrapper) context).getBaseContext());
 
         return null;
     }

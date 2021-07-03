@@ -22,16 +22,15 @@ public class ViewUtil {
     }
 
     public static int getWindowWidth(Context context) {
-        if(context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+        if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             return getWindowWidthPortrait(context);
-        }
-        else {
+        } else {
             return getWindowWidthLandscape(context);
         }
     }
 
     private static int getWindowWidthPortrait(Context context) {
-        if(windowWidthPortrait == 0) {
+        if (windowWidthPortrait == 0) {
             DisplayMetrics metrics = context.getResources().getDisplayMetrics();
             windowWidthPortrait = metrics.widthPixels;
         }
@@ -40,7 +39,7 @@ public class ViewUtil {
     }
 
     private static int getWindowWidthLandscape(Context context) {
-        if(windowWidthLandscape == 0) {
+        if (windowWidthLandscape == 0) {
             DisplayMetrics metrics = context.getResources().getDisplayMetrics();
             windowWidthLandscape = metrics.widthPixels;
         }
@@ -53,15 +52,15 @@ public class ViewUtil {
         boolean hasMenuKey = ViewConfiguration.get(context).hasPermanentMenuKey();
         boolean hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK);
 
-        if(!hasMenuKey && !hasBackKey) {
+        if (!hasMenuKey && !hasBackKey) {
             //The device has a navigation bar
             Resources resources = context.getResources();
 
             int orientation = context.getResources().getConfiguration().orientation;
             int resourceId;
-            if (isTablet(context)){
+            if (isTablet(context)) {
                 resourceId = resources.getIdentifier(orientation == Configuration.ORIENTATION_PORTRAIT ? "navigation_bar_height" : "navigation_bar_height_landscape", "dimen", "android");
-            }  else {
+            } else {
                 resourceId = resources.getIdentifier(orientation == Configuration.ORIENTATION_PORTRAIT ? "navigation_bar_height" : "navigation_bar_width", "dimen", "android");
             }
 

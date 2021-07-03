@@ -3,15 +3,14 @@
 buildscript {
     repositories {
         jcenter()
-        mavenCentral()
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.0'
+        classpath 'com.android.tools.build:gradle:3.0.1'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
         classpath 'com.jakewharton:butterknife-gradle-plugin:8.5.1'
-        classpath 'me.tatarka:gradle-retrolambda:3.6.0'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
     }
 }
@@ -19,7 +18,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
-        mavenCentral()
+        google()
     }
 }
 
