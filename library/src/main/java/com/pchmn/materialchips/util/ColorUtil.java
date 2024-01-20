@@ -25,14 +25,14 @@ public class ColorUtil {
         return Color.argb(alpha, Color.red(color), Color.green(color), Color.blue(color));
     }
 
-    public static boolean isColorDark(int color){
-        double darkness = 1 - (0.2126*Color.red(color) + 0.7152*Color.green(color) + 0.0722*Color.blue(color))/255;
+    public static boolean isColorDark(int color) {
+        double darkness = 1 - (0.2126 * Color.red(color) + 0.7152 * Color.green(color) + 0.0722 * Color.blue(color)) / 255;
         return darkness >= 0.5;
     }
 
-    public static int getThemeAccentColor (final Context context) {
-        final TypedValue value = new TypedValue ();
-        context.getTheme ().resolveAttribute (R.attr.colorAccent, value, true);
+    public static int getThemeAccentColor(final Context context) {
+        final TypedValue value = new TypedValue();
+        context.getTheme().resolveAttribute(R.attr.colorAccent, value, true);
         return value.data;
     }
 }

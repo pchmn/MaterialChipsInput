@@ -1,16 +1,12 @@
 package com.pchmn.materialchips.views;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -18,14 +14,13 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.pchmn.materialchips.R;
 import com.pchmn.materialchips.R2;
-import com.pchmn.materialchips.model.Chip;
 import com.pchmn.materialchips.model.ChipInterface;
 import com.pchmn.materialchips.util.ColorUtil;
 import com.pchmn.materialchips.util.LetterTileProvider;
-import com.pchmn.materialchips.util.MyWindowCallback;
-import com.pchmn.materialchips.util.ViewUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,16 +30,21 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class DetailedChipView extends RelativeLayout {
 
     private static final String TAG = DetailedChipView.class.toString();
-    // context
-    private Context mContext;
-    // xml elements
-    @BindView(R2.id.content) RelativeLayout mContentLayout;
-    @BindView(R2.id.avatar_icon) CircleImageView mAvatarIconImageView;
-    @BindView(R2.id.name) TextView mNameTextView;
-    @BindView(R2.id.info) TextView mInfoTextView;
-    @BindView(R2.id.delete_button) ImageButton mDeleteButton;
     // letter tile provider
     private static LetterTileProvider mLetterTileProvider;
+    // xml elements
+    @BindView(R2.id.content)
+    RelativeLayout mContentLayout;
+    @BindView(R2.id.avatar_icon)
+    CircleImageView mAvatarIconImageView;
+    @BindView(R2.id.name)
+    TextView mNameTextView;
+    @BindView(R2.id.info)
+    TextView mInfoTextView;
+    @BindView(R2.id.delete_button)
+    ImageButton mDeleteButton;
+    // context
+    private Context mContext;
     // attributes
     private ColorStateList mBackgroundColor;
 
@@ -58,6 +58,41 @@ public class DetailedChipView extends RelativeLayout {
         super(context, attrs);
         mContext = context;
         init(attrs);
+    }
+
+    private static DetailedChipView newInstance(Builder builder) {
+        DetailedChipView detailedChipView = new DetailedChipView(builder.context);
+        // avatar
+        if (builder.avatarUri != null)
+            detailedChipView.setAvatarIcon(builder.avatarUri);
+        else if (builder.avatarDrawable != null)
+            detailedChipView.setAvatarIcon(builder.avatarDrawable);
+        else
+            detailedChipView.setAvatarIcon(mLetterTileProvider.getLetterTile(builder.name));
+
+        // background color
+        if (builder.backgroundColor != null)
+            detailedChipView.setBackGroundcolor(builder.backgroundColor);
+
+        // text color
+        if (builder.textColor != null)
+            detailedChipView.setTextColor(builder.textColor);
+        else if (ColorUtil.isColorDark(detailedChipView.getBackgroundColor()))
+            detailedChipView.setTextColor(ColorStateList.valueOf(Color.WHITE));
+        else
+            detailedChipView.setTextColor(ColorStateList.valueOf(Color.BLACK));
+
+        // delete icon color
+        if (builder.deleteIconColor != null)
+            detailedChipView.setDeleteIconColor(builder.deleteIconColor);
+        else if (ColorUtil.isColorDark(detailedChipView.getBackgroundColor()))
+            detailedChipView.setDeleteIconColor(ColorStateList.valueOf(Color.WHITE));
+        else
+            detailedChipView.setDeleteIconColor(ColorStateList.valueOf(Color.BLACK));
+
+        detailedChipView.setName(builder.name);
+        detailedChipView.setInfo(builder.info);
+        return detailedChipView;
     }
 
     /**
@@ -131,11 +166,10 @@ public class DetailedChipView extends RelativeLayout {
     }
 
     public void setInfo(String info) {
-        if(info != null) {
+        if (info != null) {
             mInfoTextView.setVisibility(VISIBLE);
             mInfoTextView.setText(info);
-        }
-        else {
+        } else {
             mInfoTextView.setVisibility(GONE);
         }
     }
@@ -234,40 +268,5 @@ public class DetailedChipView extends RelativeLayout {
         public DetailedChipView build() {
             return DetailedChipView.newInstance(this);
         }
-    }
-
-    private static DetailedChipView newInstance(Builder builder) {
-        DetailedChipView detailedChipView = new DetailedChipView(builder.context);
-        // avatar
-        if(builder.avatarUri != null)
-            detailedChipView.setAvatarIcon(builder.avatarUri);
-        else if(builder.avatarDrawable != null)
-            detailedChipView.setAvatarIcon(builder.avatarDrawable);
-        else
-            detailedChipView.setAvatarIcon(mLetterTileProvider.getLetterTile(builder.name));
-
-        // background color
-        if(builder.backgroundColor != null)
-            detailedChipView.setBackGroundcolor(builder.backgroundColor);
-
-        // text color
-        if(builder.textColor != null)
-            detailedChipView.setTextColor(builder.textColor);
-        else if(ColorUtil.isColorDark(detailedChipView.getBackgroundColor()))
-            detailedChipView.setTextColor(ColorStateList.valueOf(Color.WHITE));
-        else
-            detailedChipView.setTextColor(ColorStateList.valueOf(Color.BLACK));
-
-        // delete icon color
-        if(builder.deleteIconColor != null)
-            detailedChipView.setDeleteIconColor(builder.deleteIconColor);
-        else if(ColorUtil.isColorDark(detailedChipView.getBackgroundColor()))
-            detailedChipView.setDeleteIconColor(ColorStateList.valueOf(Color.WHITE));
-        else
-            detailedChipView.setDeleteIconColor(ColorStateList.valueOf(Color.BLACK));
-
-        detailedChipView.setName(builder.name);
-        detailedChipView.setInfo(builder.info);
-        return detailedChipView;
     }
 }
