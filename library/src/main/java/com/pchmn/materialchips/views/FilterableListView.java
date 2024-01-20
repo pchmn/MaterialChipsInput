@@ -89,7 +89,11 @@ public class FilterableListView extends RelativeLayout {
                     layoutParams.bottomMargin = ViewUtil.getNavBarHeight(mContext);
                 }
 
-
+                //If this child view is already added to the parent rootView, then remove it first
+                ViewGroup parent = (ViewGroup) FilterableListView.this.getParent();
+                if (parent != null) {
+                    parent.removeView(FilterableListView.this);
+                }
                 // add view
                 rootView.addView(FilterableListView.this, layoutParams);
 
