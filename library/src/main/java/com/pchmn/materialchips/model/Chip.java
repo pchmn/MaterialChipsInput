@@ -2,19 +2,18 @@ package com.pchmn.materialchips.model;
 
 
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 public class Chip implements ChipInterface {
 
     private Object id;
-    private Uri avatarUri;
+    private String avatarUri;
     private Drawable avatarDrawable;
     private String label;
     private String info;
 
-    public Chip(@NonNull Object id, @Nullable Uri avatarUri, @NonNull String label, @Nullable String info) {
+    public Chip(@NonNull Object id, @Nullable String avatarUri, @NonNull String label, @Nullable String info) {
         this.id = id;
         this.avatarUri = avatarUri;
         this.label = label;
@@ -28,7 +27,7 @@ public class Chip implements ChipInterface {
         this.info = info;
     }
 
-    public Chip(@Nullable Uri avatarUri, @NonNull String label, @Nullable String info) {
+    public Chip(@Nullable String avatarUri, @NonNull String label, @Nullable String info) {
         this.avatarUri = avatarUri;
         this.label = label;
         this.info = info;
@@ -57,7 +56,7 @@ public class Chip implements ChipInterface {
     }
 
     @Override
-    public Uri getAvatarUri() {
+    public String getAvatarUri() {
         return avatarUri;
     }
 

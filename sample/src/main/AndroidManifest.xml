@@ -3,6 +3,7 @@
     package="com.pchmn.sample.materialchipsinput">
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -19,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ContactListActivity" />
-        <activity android:name=".ChipExamplesActivity"></activity>
+        <activity android:name=".ChipExamplesActivity" />
     </application>
 
 </manifest>
