@@ -1,6 +1,6 @@
-## [CURRENT SITUATION OF THE LIBRARY]
+## [DEPRECATED]
 
-⚠️ The library is currently not maintained.
+⚠️ The library is not maintained and the repo is archived.
 
 # MaterialChipsInput
 
