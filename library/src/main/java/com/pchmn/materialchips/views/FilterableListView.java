@@ -18,22 +18,18 @@ import android.widget.RelativeLayout;
 
 import com.pchmn.materialchips.ChipsInput;
 import com.pchmn.materialchips.R;
-import com.pchmn.materialchips.R2;
 import com.pchmn.materialchips.adapter.FilterableAdapter;
 import com.pchmn.materialchips.model.ChipInterface;
 import com.pchmn.materialchips.util.ViewUtil;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class FilterableListView extends RelativeLayout {
 
     private static final String TAG = FilterableListView.class.toString();
     private Context mContext;
     // list
-    @BindView(R2.id.recycler_view) RecyclerView mRecyclerView;
+    private RecyclerView mRecyclerView;
     private FilterableAdapter mAdapter;
     private List<? extends ChipInterface> mFilterableList;
     // others
@@ -48,8 +44,8 @@ public class FilterableListView extends RelativeLayout {
     private void init() {
         // inflate layout
         View view = inflate(getContext(), R.layout.list_filterable_view, this);
-        // butter knife
-        ButterKnife.bind(this, view);
+
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
 
         // recycler
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
