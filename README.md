@@ -37,7 +37,7 @@ dependencies {
 ## ChipsInput
 This view implements the Material Design [Contact chips component](https://material.io/guidelines/components/chips.html#chips-contact-chips). 
 
-It is composed of a collection of chips (`ChipView`) and an input (`EditText`). Touching a chip open a full detailed view (if non disable). The [GIF](#materialchipsinput) above describes the behavior of the `ChipsInput` view.
+It is composed of a collection of chips (`ChipView`) and an input (`EditText`). Touching a chip opens a full detailed view (if non disabled). The [GIF](#materialchipsinput) above describes the behavior of the `ChipsInput` view.
 
 But everything is configurable (optional avatar icon, optional full detailed view, ...) so you can use the `ChipsInput` view for non contact chips.
 ### Basic Usage
