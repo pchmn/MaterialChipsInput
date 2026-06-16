@@ -7,14 +7,15 @@ import android.content.res.Configuration;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.os.Build;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.AlphaAnimation;
 import android.widget.Filter;
 import android.widget.RelativeLayout;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.pchmn.materialchips.ChipsInput;
 import com.pchmn.materialchips.R;
@@ -31,9 +32,10 @@ import butterknife.ButterKnife;
 public class FilterableListView extends RelativeLayout {
 
     private static final String TAG = FilterableListView.class.toString();
-    private Context mContext;
     // list
-    @BindView(R2.id.recycler_view) RecyclerView mRecyclerView;
+    @BindView(R2.id.recycler_view)
+    RecyclerView mRecyclerView;
+    private Context mContext;
     private FilterableAdapter mAdapter;
     private List<? extends ChipInterface> mFilterableList;
     // others
@@ -65,7 +67,7 @@ public class FilterableListView extends RelativeLayout {
         // adapter
         mAdapter = new FilterableAdapter(mContext, mRecyclerView, filterableList, chipsInput, backgroundColor, textColor);
         mRecyclerView.setAdapter(mAdapter);
-        if(backgroundColor != null)
+        if (backgroundColor != null)
             mRecyclerView.getBackground().setColorFilter(backgroundColor.getDefaultColor(), PorterDuff.Mode.SRC_ATOP);
 
         // listen to change in the tree
@@ -85,10 +87,9 @@ public class FilterableListView extends RelativeLayout {
                 layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
                 layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 
-                if(mContext.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+                if (mContext.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                     layoutParams.bottomMargin = ViewUtil.getNavBarHeight(mContext);
                 }
-
 
                 // add view
                 rootView.addView(FilterableListView.this, layoutParams);
@@ -109,7 +110,7 @@ public class FilterableListView extends RelativeLayout {
             @Override
             public void onFilterComplete(int count) {
                 // show if there are results
-                if(mAdapter.getItemCount() > 0)
+                if (mAdapter.getItemCount() > 0)
                     fadeIn();
                 else
                     fadeOut();
@@ -121,7 +122,7 @@ public class FilterableListView extends RelativeLayout {
      * Fade in
      */
     public void fadeIn() {
-        if(getVisibility() == VISIBLE)
+        if (getVisibility() == VISIBLE)
             return;
 
         // get visible window (keyboard shown)
@@ -147,7 +148,7 @@ public class FilterableListView extends RelativeLayout {
      * Fade out
      */
     public void fadeOut() {
-        if(getVisibility() == GONE)
+        if (getVisibility() == GONE)
             return;
 
         AlphaAnimation anim = new AlphaAnimation(1.0f, 0.0f);

@@ -3,42 +3,42 @@
     android:id="@+id/container"
     android:layout_width="300dp"
     android:layout_height="100dp"
-    android:focusableInTouchMode="true"
+    android:clickable="true"
     android:focusable="true"
-    android:clickable="true">
-    
+    android:focusableInTouchMode="true">
+
     <!-- content -->
     <RelativeLayout
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_chip_view_opened"
-        android:elevation="6dp"
-        android:layout_marginTop="12dp"
         android:layout_marginLeft="12dp"
+        android:layout_marginTop="12dp"
         android:layout_marginRight="12dp"
         android:layout_marginBottom="12dp"
-        android:clickable="true">
+        android:background="@drawable/bg_chip_view_opened"
+        android:clickable="true"
+        android:elevation="6dp">
 
         <!-- avatar icon -->
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/avatar_icon"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
-            android:layout_centerVertical="true"
-            android:src="@drawable/avatar"/>
+            android:src="@drawable/avatar" />
 
         <!-- info -->
         <LinearLayout
             android:id="@+id/info_layout"
-            android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/avatar_icon"
-            android:layout_toLeftOf="@+id/delete_button"
             android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/delete_button"
+            android:layout_toRightOf="@+id/avatar_icon"
+            android:orientation="vertical"
             android:paddingTop="16dp"
             android:paddingBottom="16dp">
 
@@ -50,8 +50,8 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:scrollHorizontally="true"
-                android:textSize="16sp"
-                android:text="Contact name sdfdsfdsfdgs"/>
+                android:text="Contact name sdfdsfdsfdgs"
+                android:textSize="16sp" />
 
             <!-- info -->
             <TextView
@@ -59,11 +59,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:textSize="14sp"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:scrollHorizontally="true"
-                android:text="paul@gmail.comdfdgdgsdggdgdgdgdsgdgdgdg"/>
+                android:text="paul@gmail.comdfdgdgsdggdgdgdgdsgdgdgdg"
+                android:textSize="14sp" />
 
         </LinearLayout>
 
@@ -74,10 +74,10 @@
             android:layout_height="30dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:background="?attr/selectableItemBackgroundBorderless"
             android:layout_marginRight="10dp"
-            android:src="@drawable/ic_cancel_white_24dp"/>
-        
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_cancel_white_24dp" />
+
     </RelativeLayout>
 
 </RelativeLayout>
